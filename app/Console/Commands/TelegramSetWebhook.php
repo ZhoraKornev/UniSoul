@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Telegram\Bot\Api;
-use Telegram\Bot\Exceptions\TelegramSDKException;
+use SergiX44\Nutgram\Nutgram;
+use Symfony\Component\Console\Command\Command as CommandCLI;
+use Throwable;
 
 class TelegramSetWebhook extends Command
 {
@@ -14,75 +15,86 @@ class TelegramSetWebhook extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:set-webhook {--url=}
-                                                {--remove : Remove the webhook instead of setting it}';
+    protected $signature = 'telegram:set-webhook
+                                                {--url= : Specify the webhook URL manually.}
+                                                {--remove : Remove the webhook instead of setting it.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Set or remove the Telegram bot webhook URL.';
+    protected $description = 'Set or remove the Telegram bot webhook URL using Nutgram.';
 
     /**
      * Execute the console command.
      */
-    public function handle(Api $telegram): int
+    public function handle(Nutgram $bot): int
     {
         if ($this->option('remove')) {
-            return $this->removeWebhook($telegram);
+            return $this->removeWebhook($bot);
         }
 
-        $url = $this->option('url') ?? config('app.url') . '/telegram/webhook';
+        $url = $this->option('url') ?? config('app.url') . config('nutgram.global.url');
 
-        if (empty(config('telegram.bots.default.token'))) {
-            $this->error('The TELEGRAM_BOT_TOKEN is not set in your .env file or config.');
-            return Command::FAILURE;
+        if (empty(config('nutgram.bots.default.token'))) {
+            $this->error('The NUTGRAM_BOT_TOKEN is not set in your .env file or config.');
+            return CommandCLI::FAILURE;
         }
 
         $this->info("Attempting to set webhook to: {$url}");
 
         try {
-            $response = $telegram->setWebhook(['url' => $url]);
+            // Set the webhook
+            $bot->setWebhook(url: $url);
 
-            if ($response) {
+            // Fetch webhook info to confirm and display details
+            $response = $bot->getWebhookInfo();
+
+            if ($response->url === $url) {
                 $this->info('Webhook successfully set.');
-                $this->line("Response: " . json_encode($response->toArray(), JSON_PRETTY_PRINT));
-                return Command::SUCCESS;
+                $this->line("Current Webhook Info: " . json_encode($response->toArray(), JSON_PRETTY_PRINT));
+                return CommandCLI::SUCCESS;
             } else {
-                $this->error('Failed to set webhook. Telegram API returned a non-successful response.');
-                return Command::FAILURE;
+                $this->error('Failed to set webhook or URL mismatch.');
+                return CommandCLI::FAILURE;
             }
-        } catch (TelegramSDKException $e) {
-            $this->error("Telegram SDK Error: " . $e->getMessage());
-            Log::error("Telegram Set Webhook Error: " . $e->getMessage());
-            return Command::FAILURE;
+        } catch (Throwable $e) {
+            $this->error("Nutgram API Error: " . $e->getMessage());
+            Log::error("Nutgram Set Webhook Error: " . $e->getMessage());
+            return CommandCLI::FAILURE;
         }
     }
 
     /**
      * Remove the webhook.
      */
-    protected function removeWebhook(Api $telegram): int
+    protected function removeWebhook(Nutgram $bot): int
     {
+        if (empty(config('nutgram.bots.default.token'))) {
+            $this->error('The NUTGRAM_BOT_TOKEN is not set in your .env file or config.');
+            return CommandCLI::FAILURE;
+        }
+
         $this->info('Attempting to remove webhook...');
 
         try {
-            $response = $telegram->removeWebhook();
+            $bot->deleteWebhook();
 
-            if ($response) {
+            $response = $bot->getWebhookInfo();
+
+            if (empty($response->url)) {
                 $this->info('Webhook successfully removed.');
                 $this->line("Response: " . json_encode($response->toArray(), JSON_PRETTY_PRINT));
-                return Command::SUCCESS;
+                return CommandCLI::SUCCESS;
             } else {
-                $this->error('Failed to remove webhook.');
-                return Command::FAILURE;
+                $this->error('Failed to remove webhook. Webhook URL is still present.');
+                return CommandCLI::FAILURE;
             }
-        } catch (TelegramSDKException $e) {
-            $this->error("Telegram SDK Error: " . $e->getMessage());
-            Log::error("Telegram Remove Webhook Error: " . $e->getMessage());
-            return Command::FAILURE;
+        } catch (Throwable $e) {
+            $this->error("Nutgram API Error: " . $e->getMessage());
+            Log::error("Nutgram Remove Webhook Error: " . $e->getMessage());
+            return CommandCLI::FAILURE;
         }
     }
 }
-
