@@ -8,4 +8,5 @@ return [
     'settings_message_placeholder' => 'Меню налаштувань ще не реалізовано.',
     'button_back' => '⬅️ Назад',
     'select_confession' => 'Оберіть вашу конфесію:',
+    'main_menu' => '🏠 Головне меню',
 ];

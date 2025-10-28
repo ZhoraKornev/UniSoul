@@ -8,4 +8,5 @@ return [
     'settings_message_placeholder' => 'Settings menu is not implemented yet.',
     'button_back' => '⬅️ Back',
     'select_confession' => 'Select your confession:',
+    'main_menu' => '🏠 Main Menu',
 ];

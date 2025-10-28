@@ -31,9 +31,12 @@ return new class extends Migration
 
             // Масив країн, у яких поширена конфесія (зберігаємо ID країн)
             $table->json('country_ids');
-            
+
             // Активність конфесії
             $table->boolean('active')->default(false);
+            // ВИПРАВЛЕНО: Видалено ->after('active') з Schema::create
+            $table->json('available_actions')->nullable()
+                ->comment('Доступні дії (послуги) для цієї конфесії, зберігається як масив значень ConfessionSubActions enum.');
 
             $table->timestamps();
         });

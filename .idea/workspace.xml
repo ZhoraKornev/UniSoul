@@ -5,112 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="Raw code for start project">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Contracts/ActionHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Enums/State.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/Pages/ManageBotButtons.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Users/Pages/ManageUsers.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Users/UserResource.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/BotButton.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Confession.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Country.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Providers/Filament/ManagementPanelProvider.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Services/HandlerProvider.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/GenderSelectCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/StartCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Handlers/BackNavigationHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionSelectHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Handlers/DynamicMenuHandler.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Middleware/SetUserLocaleMiddleware.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/nutgram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/UserSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lang/de/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lang/en/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lang/ka/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lang/ro/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lang/uk/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/css/filament/filament/app.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-ASVAGXXE.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-XKHXBTUO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-EWLSKVKN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-R5CMSONN.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-7GGTF7EK.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-ZEVLMORV.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-AXVTPQD5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-greek-wght-normal-N43DBLU2.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-5SRY4DMZ.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-GZCIV3NH.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-O25CN4JL.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-latin-wght-normal-OPIJAQLS.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-TWG5UU7E.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/actions/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/filament/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/filament/echo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/checkbox-list.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/code-editor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/color-picker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/date-time-picker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/file-upload.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/key-value.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/markdown-editor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/rich-editor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/select.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/slider.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/tags-input.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/forms/components/textarea.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/notifications/notifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/schemas/components/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/schemas/components/tabs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/schemas/components/wizard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/schemas/schemas.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/support/support.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/tables/components/columns/checkbox.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/tables/components/columns/select.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/tables/components/columns/text-input.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/tables/components/columns/toggle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/tables/tables.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/widgets/components/chart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/filament/widgets/components/stats-overview/stat/chart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/telegram.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/storage/debugbar/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Enums/ConfessionActions.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Enums/ConfessionSubActions.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/CancelCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/FeedbackCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/HelpCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/SettingsCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/DonateConversation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/FeedbackConversation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Middleware/AboutCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Commands/TelegramSetWebhook.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/TelegramSetWebhook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/UserConfig.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/UserConfig.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/UserMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/UserMessage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/providers.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/providers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Enums/BotCallback.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Confession.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Confession.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Commands/StartCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Commands/StartCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuListHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionSelectHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionsSelectedHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/DynamicMenuHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/DynamicMenuHandler.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/telegram.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/channels.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/nutgram.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/nutgram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/telegram.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,6 +217,7 @@
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-translatable" />
       <path value="$PROJECT_DIR$/vendor/barryvdh/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-ide-helper" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -315,7 +236,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/projects/tg_bot/lang/ka",
+    "last_opened_file_path": "/projects/tg_bot/app/Telegram/Commands",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -332,11 +253,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Telegram/Commands" />
+      <recent name="$PROJECT_DIR$/app/Telegram" />
       <recent name="$PROJECT_DIR$/lang/ka" />
       <recent name="$PROJECT_DIR$/lang" />
       <recent name="$PROJECT_DIR$/lang/en" />
-      <recent name="$PROJECT_DIR$/lang/de" />
-      <recent name="$PROJECT_DIR$/lang/uk" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -369,7 +290,9 @@
       <workItem from="1761505922941" duration="5762000" />
       <workItem from="1761517149010" duration="1028000" />
       <workItem from="1761555406269" duration="1455000" />
-      <workItem from="1761559749452" duration="26806000" />
+      <workItem from="1761559749452" duration="27110000" />
+      <workItem from="1761641122033" duration="1355000" />
+      <workItem from="1761655765597" duration="6681000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -395,7 +318,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761517550672</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Raw code for start project">
+      <option name="closed" value="true" />
+      <created>1761608199048</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1761608199048</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

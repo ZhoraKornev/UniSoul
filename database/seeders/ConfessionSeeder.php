@@ -4,11 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\Confession;
 use Illuminate\Database\Seeder;
+use App\Enums\ConfessionSubActions;
 
 class ConfessionSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
+        // 1. Українська православна церква (Київський патріархат) - підтримує більшість служб
         Confession::create([
             'name' => [
                 'uk' => 'Українська православна церква Київського патріархату',
@@ -34,8 +39,17 @@ class ConfessionSeeder extends Seeder
             'emoji' => '☦️',
             'country_ids' => [1],
             'active' => true,
+            'available_actions' => [
+                ConfessionSubActions::Sorokoust->value,
+                ConfessionSubActions::LightACandle->value,
+                ConfessionSubActions::SubmitPrayerNote->value,
+                ConfessionSubActions::ReadAkathists->value,
+                ConfessionSubActions::ReadUnceasingPsalter->value,
+                ConfessionSubActions::MemorialService->value,
+            ],
         ]);
 
+        // 2. Свідки Єгови - не підтримують традиційних літургійних служб
         Confession::create([
             'name' => [
                 'uk' => 'Свідки Єгови',
@@ -61,8 +75,10 @@ class ConfessionSeeder extends Seeder
             'emoji' => '📖',
             'country_ids' => [1],
             'active' => true,
+            'available_actions' => [], // Немає доступних літургійних дій
         ]);
 
+        // 3. Українська греко-католицька церква - підтримує основні східні католицькі служби
         Confession::create([
             'name' => [
                 'uk' => 'Українська греко-католицька церква',
@@ -88,6 +104,12 @@ class ConfessionSeeder extends Seeder
             'emoji' => '✝️',
             'country_ids' => [1],
             'active' => true,
+            'available_actions' => [
+                ConfessionSubActions::Sorokoust->value,
+                ConfessionSubActions::LightACandle->value,
+                ConfessionSubActions::SubmitPrayerNote->value,
+                ConfessionSubActions::MemorialService->value,
+            ],
         ]);
     }
 }

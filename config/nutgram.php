@@ -24,8 +24,8 @@ return [
     'log_channel' => env('TELEGRAM_LOG_CHANNEL', 'null'),
 
     'handlers' => [
-        \App\Telegram\Handlers\ConfessionMenuHandler::class,
-        \App\Telegram\Handlers\ConfessionSelectHandler::class,
+        \App\Telegram\Handlers\ConfessionMenuListHandler::class,
+        \App\Telegram\Handlers\ConfessionsSelectedHandler::class,
         \App\Telegram\Handlers\DynamicMenuHandler::class,
         \App\Telegram\Handlers\BackNavigationHandler::class,
     ],

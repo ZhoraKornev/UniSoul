@@ -8,4 +8,5 @@ return [
     'settings_message_placeholder' => 'Meniul de setări nu este încă implementat.',
     'button_back' => '⬅️ Înapoi',
     'select_confession' => 'Selectați confesiunea dumneavoastră:',
+    'main_menu' => '🏠 Meniul Principal',
 ];

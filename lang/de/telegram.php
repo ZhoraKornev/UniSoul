@@ -8,4 +8,5 @@ return [
     'settings_message_placeholder' => 'Das Einstellungsmenü ist noch nicht implementiert.',
     'button_back' => '⬅️ Zurück',
     'select_confession' => 'Wählen Sie Ihre Konfession:',
+    'main_menu' => '🏠 Hauptmenü',
 ];

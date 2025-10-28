@@ -50,16 +50,7 @@ class DynamicMenuHandler implements ActionHandler
 
     public function isSupport(string $actionCallbackName): bool
     {
-        // Skip back buttons - they have their own handler
-        if (str_contains($actionCallbackName, __('telegram.button_back'))) {
-            return false;
-        }
-
-        // Check if any button matches this text
-        return BotButton::whereHas('translations', function ($query) use ($actionCallbackName) {
-            $query->where('value', $actionCallbackName)
-                ->orWhere('value', 'like', '%' . trim(preg_replace('/^[^\s]+\s/', '', $actionCallbackName)) . '%');
-        })->exists();
+        return false;
     }
 
     private function showSubmenu(Nutgram $bot, BotButton $parent, $children): void

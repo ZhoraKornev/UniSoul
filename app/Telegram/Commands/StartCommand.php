@@ -5,8 +5,8 @@ namespace App\Telegram\Commands;
 use App\Models\BotButton;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton; // Використовуємо Inline
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup; // Використовуємо Inline
 
 class StartCommand extends Command
 {
@@ -17,12 +17,15 @@ class StartCommand extends Command
     public function handle(Nutgram $bot): void
     {
         $buttons = BotButton::whereNull('parent_id')->orderBy('order')->get();
-        
-        $keyboard = ReplyKeyboardMarkup::make(resize_keyboard: true);
-        
+
+        $keyboard = InlineKeyboardMarkup::make();
+
         foreach ($buttons as $button) {
             $keyboard->addRow(
-                KeyboardButton::make($button->getTranslation('text', app()->getLocale()))
+                InlineKeyboardButton::make(
+                    text: $button->getTranslation('text', app()->getLocale()),
+                    callback_data: $button->callback_data
+                )
             );
         }
 

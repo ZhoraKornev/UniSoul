@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Enums\ConfessionSubActions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -30,6 +30,7 @@ class Confession extends Model
         'emoji',
         'country_ids',
         'active',
+        'available_actions', // Додано нове поле
     ];
 
     /**
@@ -47,14 +48,26 @@ class Confession extends Model
     protected $casts = [
         'country_ids' => 'array',
         'active' => 'boolean',
+        'available_actions' => 'array', // Зберігаємо як JSON-масив у БД, PHP перетворює його на звичайний масив
     ];
 
+
     /**
-     * Отримати країни, пов'язані з цією конфесією.
-     * Хоча country_ids зберігається як масив, ми можемо створити метод доступу для зручності.
+     * Отримати об'єкти ConfessionSubActions для доступних дій.
+     * Це дозволяє отримати доступ до енумів, а не просто рядків.
      */
-    public function getCountriesAttribute(): Collection
+    public function getAvailableActionEnumsAttribute(): array
     {
-        return Country::whereIn('id', $this->country_ids)->get();
+        // Перетворюємо масив рядків (що зберігається в available_actions) на масив об'єктів Enum
+        return array_map(function ($actionValue) {
+            try {
+                // Використовуємо ConfessionSubActions::tryFrom для безпечного перетворення
+                return ConfessionSubActions::tryFrom($actionValue);
+            } catch (\ValueError $e) {
+                // Ігноруємо або логуємо невідомі значення
+                return null;
+            }
+        }, $this->available_actions ?? []);
     }
 }
+

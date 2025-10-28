@@ -2,15 +2,28 @@
 
 namespace Database\Seeders;
 
+use App\Enums\BotCallback;
+use App\Enums\ConfessionActions;
+use App\Enums\ConfessionSubActions;
 use App\Models\BotButton;
 use Illuminate\Database\Seeder;
 
 class BotButtonSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        // Main menu buttons (parent_id = null)
-        $confessionButton = BotButton::create([
+        // Define a placeholder Confession ID for demonstration purposes.
+        // The ID is kept in callbacks to maintain context for future handlers.
+        $mockConfessionId = 1;
+
+        // -----------------------------------------------------------------
+        // LEVEL 0: MAIN MENU BUTTONS (parent_id = null)
+        // -----------------------------------------------------------------
+
+        $confessionListButton = BotButton::create([
             'parent_id' => null,
             'text' => [
                 'uk' => '🙏 Вибір конфесії',
@@ -19,97 +32,84 @@ class BotButtonSeeder extends Seeder
                 'ro' => '🙏 Selectarea Confesiunii',
                 'ka' => '🙏 კონფესიის არჩევა'
             ],
-            'callback_data' => 'confession_menu',
+            // Callback to initiate the Confession Actions flow (now Level 1 parent)
+            'callback_data' => BotCallback::ConfessionListMenu->value,
             'order' => 1,
         ]);
 
+        // Placeholder for other Main Menu buttons (Help, Settings, etc.)
         BotButton::create([
             'parent_id' => null,
-            'text' => [
-                'uk' => '❓ Допомога',
-                'en' => '❓ Help',
-                'de' => '❓ Hilfe',
-                'ro' => '❓ Ajutor',
-                'ka' => '❓ დახმარება'
-            ],
-            'callback_data' => 'help_menu',
+            'text' => ['uk' => '⚙️ Налаштування', 'en' => '⚙️ Settings', 'de' => '⚙️ Einstellungen', 'ro' => '⚙️ Setări', 'ka' => '⚙️ პარამეтри'],
+            'callback_data' => 'placeholder:settings',
             'order' => 2,
         ]);
 
-        BotButton::create([
-            'parent_id' => null,
-            'text' => [
-                'uk' => '⚙️ Налаштування',
-                'en' => '⚙️ Settings',
-                'de' => '⚙️ Einstellungen',
-                'ro' => '⚙️ Setări',
-                'ka' => '⚙️ პარამეტრები'
-            ],
-            'callback_data' => 'settings_menu',
-            'order' => 3,
-        ]);
+        // -----------------------------------------------------------------
+        // LEVEL 1: CONFESSION ACTIONS (parent_id = confessionListButton->id)
+        // Actions shown immediately after clicking the Main Menu 'Confession' button
+        // -----------------------------------------------------------------
 
-        // Confession submenu buttons (parent_id = confession button id)
+        // Action 1: Learn about the confession
         BotButton::create([
-            'parent_id' => $confessionButton->id,
-            'text' => [
-                'uk' => '📖 Переглянути конфесії',
-                'en' => '📖 View Confessions',
-                'de' => '📖 Konfessionen anzeigen',
-                'ro' => '📖 Vizualizare Confesiuni',
-                'ka' => '📖 კონფესიების ნახვა'
-            ],
-            'callback_data' => 'view_confessions',
+            'parent_id' => $confessionListButton->id, // Parent is the main 'Confession List' button
+            'text' => ['uk' => 'ℹ️ Дізнатися більше', 'en' => 'ℹ️ Learn More', 'de' => 'ℹ️ Mehr erfahren', 'ro' => 'ℹ️ Află mai multe', 'ka' => 'ℹ️ მეტის გაგება'],
+            'callback_data' => ConfessionActions::LearnAboutConfession->value . ':' . $mockConfessionId,
             'order' => 1,
         ]);
 
-        BotButton::create([
-            'parent_id' => $confessionButton->id,
-            'text' => [
-                'uk' => '⬅️ Назад',
-                'en' => '⬅️ Back',
-                'de' => '⬅️ Zurück',
-                'ro' => '⬅️ Înapoi',
-                'ka' => '⬅️ უკან'
-            ],
-            'callback_data' => 'back_to_main',
+        // Action 2: Menu for Liturgical Services (Parent for Level 2)
+        $confessionMenuActionButton = BotButton::create([
+            'parent_id' => $confessionListButton->id, // Parent is the main 'Confession List' button
+            'text' => ['uk' => '🙏 Замовити Служби', 'en' => '🙏 Order Services', 'de' => '🙏 Gottesdienste bestellen', 'ro' => '🙏 Comandă Servicii', 'ka' => '🙏 მომსახურების შეკვეთა'],
+            'callback_data' => ConfessionActions::ConfessionMenuAction->value . ':' . $mockConfessionId,
             'order' => 2,
         ]);
 
-        $settingsParent = BotButton::where('callback_data', 'settings_menu')->first();
+        // Back button for Level 1 (Actions Menu)
+        BotButton::create([
+            'parent_id' => $confessionListButton->id,
+            'text' => ['uk' => '⬅️ Головне меню', 'en' => '⬅️ Main Menu', 'de' => '⬅️ Hauptmenü', 'ro' => '⬅️ Meniul Principal', 'ka' => '⬅️ მთავარი мeню'],
+            'callback_data' => BotCallback::MainMenu->value,
+            'order' => 99,
+        ]);
 
-        if ($settingsParent) {
-            $settingsButtons = [
-                [
-                    'order' => 1,
-                    'callback_data' => 'set_lang',
-                    'text' => ['uk' => 'Змінити мову 🌐', 'en' => 'Change Language 🌐', 'ro' => 'Schimbă Limba 🌐', 'de' => 'Sprache ändern 🌐', 'ka' => 'ენის შეცვლა 🌐'],
-                ],
-                [
-                    'order' => 2,
-                    'callback_data' => 'set_gender',
-                    'text' => ['uk' => 'Вказати стать 🚻', 'en' => 'Specify Gender 🚻', 'ro' => 'Specifică Genul 🚻', 'de' => 'Geschlecht angeben 🚻', 'ka' => 'სქესის მითითება 🚻'],
-                ],
-                [
-                    'order' => 3,
-                    'callback_data' => 'set_country',
-                    'text' => ['uk' => 'Змінити країну 🗺️', 'en' => 'Change Country 🗺️', 'ro' => 'Schimbă Țara 🗺️', 'de' => 'Land ändern 🗺️', 'ka' => 'ქვეყნის შეცვლა 🗺️'],
-                ],
-                [
-                    'order' => 4,
-                    'callback_data' => 'main_menu',
-                    'text' => ['uk' => '🔙 Головне меню', 'en' => '🔙 Main Menu', 'ro' => '🔙 Meniul Principal', 'de' => '🔙 Hauptmenü', 'ka' => '🔙 მთავარი მენიუ'],
-                ],
-            ];
+        // -----------------------------------------------------------------
+        // LEVEL 2: CONFESSION SUB ACTIONS (parent_id = confessionMenuActionButton->id)
+        // Liturgical Services menu
+        // -----------------------------------------------------------------
 
-            foreach ($settingsButtons as $buttonData) {
-                BotButton::create([
-                    'parent_id' => $settingsParent->id,
-                    'text' => $buttonData['text'],
-                    'callback_data' => $buttonData['callback_data'],
-                    'order' => $buttonData['order'],
-                ]);
-            }
+        $subActions = [
+            ['enum' => ConfessionSubActions::Sorokoust, 'uk' => 'Сорокоуст', 'en' => 'Sorokoust'],
+            ['enum' => ConfessionSubActions::LightACandle, 'uk' => 'Поставити свічку', 'en' => 'Light a Candle'],
+            ['enum' => ConfessionSubActions::SubmitPrayerNote, 'uk' => 'Подати записку', 'en' => 'Submit Prayer Note'],
+            ['enum' => ConfessionSubActions::ReadAkathists, 'uk' => 'Читання Акафістів', 'en' => 'Reading of Akathists'],
+            ['enum' => ConfessionSubActions::ReadUnceasingPsalter, 'uk' => 'Читання Неусипаної Псалтирі', 'en' => 'Reading of Unceasing Psalter'],
+            ['enum' => ConfessionSubActions::MemorialService, 'uk' => 'Панахида', 'en' => 'Memorial Service'],
+        ];
+
+        foreach ($subActions as $index => $action) {
+            BotButton::create([
+                'parent_id' => $confessionMenuActionButton->id,
+                'text' => [
+                    'uk' => $action['uk'],
+                    'en' => $action['en'],
+                    'de' => $action['en'], // Placeholder
+                    'ro' => $action['en'], // Placeholder
+                    'ka' => $action['en'], // Placeholder
+                ],
+                // Callback includes sub-action and Confession ID
+                'callback_data' => $action['enum']->value . ':' . $mockConfessionId,
+                'order' => $index + 1,
+            ]);
         }
+
+        // Back button for Level 2 (Sub Actions Menu)
+        BotButton::create([
+            'parent_id' => $confessionMenuActionButton->id,
+            'text' => ['uk' => '⬅️ Назад до Дій', 'en' => '⬅️ Back to Actions', 'de' => '⬅️ Zurück zu Aktionen', 'ro' => '⬅️ Înapoi la Acțiuni', 'ka' => '⬅️ უკან мооქმედებებში'],
+            'callback_data' => BotCallback::ConfessionListMenu->value, // Returns to Level 1 Actions view
+            'order' => 99,
+        ]);
     }
 }
