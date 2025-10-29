@@ -26,9 +26,9 @@ enum Gender: string
     public function label(): string
     {
         return match ($this) {
-            self::MALE => trans('gender.male'),
-            self::FEMALE => trans('gender.female'),
-            self::OTHER => trans('gender.other'),
+            self::MALE => trans('telegram.gender.male'),
+            self::FEMALE => trans('telegram.gender.female'),
+            self::OTHER => trans('telegram.gender.other'),
         };
     }
 }

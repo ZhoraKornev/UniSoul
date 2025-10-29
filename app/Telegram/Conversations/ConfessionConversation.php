@@ -8,9 +8,6 @@ use App\Enums\ConfessionActions;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use App\Telegram\Conversations\MainMenuConversation;
-
-// Added: Assuming this is where backToMain points
 
 class ConfessionConversation extends InlineMenu
 {

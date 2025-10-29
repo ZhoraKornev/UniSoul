@@ -2,7 +2,10 @@
 
 namespace App\Telegram\Conversations;
 
+use App\Enums\SettingsKeys;
 use App\Models\BotButton;
+use App\Models\Chat;
+use App\Models\Confession;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -25,6 +28,19 @@ class MainMenuConversation extends InlineMenu
                 )
             );
         }
+        /** @var Chat|null $chat */
+        $chat = $bot->get(Chat::class);
+        $setupConfessionID = $chat->settings()->get(SettingsKeys::CONFESSION->value);
+        if ($setupConfessionID !== null){
+            /** @var Confession|null $confession */
+            $confession = Confession::find($setupConfessionID);
+            $this->addButtonRow(
+                InlineKeyboardButton::make(
+                    text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
+                    callback_data: 'confession:' . $setupConfessionID . '@showConfession'
+                )
+            );
+        }
 
         $this->showMenu();
     }
@@ -32,5 +48,12 @@ class MainMenuConversation extends InlineMenu
     public function handleConfessionlistmenu(Nutgram $bot): void
     {
         ConfessionConversation::begin($bot);
+    }
+
+    public function showConfession(Nutgram $bot): void
+    {
+        $bot->answerCallbackQuery();
+        $conversation = ConfessionConversation::begin($bot);
+        $conversation->showConfession($bot);
     }
 }

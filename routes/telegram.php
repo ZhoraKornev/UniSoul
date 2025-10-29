@@ -3,7 +3,6 @@
 use App\Telegram\Commands\HelpCommand;
 use App\Telegram\Commands\SettingsCommand;
 use App\Telegram\Commands\StartCommand;
-use App\Telegram\Conversations\ConfessionConversation;
 use App\Telegram\Conversations\MainMenuConversation;
 use App\Telegram\Middleware\CheckMaintenance;
 use App\Telegram\Middleware\CollectChatData;

@@ -3,8 +3,8 @@
 return [
 
     'description' => [
-        'main' => 'Bot Telegram: Spersonalizowane Ustawienia i Informacje o Wyznaniu',
-        'extra' => 'Bot, który dostosowuje się tylko do Ciebie! To wielofunkcyjny bot Telegram dla tych, którzy cenią personalizację i szybki dostęp do specjalistycznych danych.',
+        'main' => 'Bot Telegram: Setări Personalizate și Informații despre Confesiuni',
+        'extra' => 'Un bot care se adaptează exact la tine! Acesta este un bot Telegram multifuncțional pentru cei care prețuiesc personalizarea și accesul rapid la date specializate.',
     ],
 
 ];

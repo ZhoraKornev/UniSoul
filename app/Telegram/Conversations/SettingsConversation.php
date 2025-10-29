@@ -3,6 +3,7 @@
 namespace App\Telegram\Conversations;
 
 use App\Enums\Gender;
+use App\Enums\SettingsKeys;
 use App\Models\Chat;
 use App\Models\Confession;
 use Illuminate\Support\Facades\App;
@@ -16,11 +17,11 @@ class SettingsConversation extends InlineMenu
     public function start(Nutgram $bot): void
     {
         /** @var Chat|null $chat */
-        $chat = Chat::find($bot->userId());
+        $chat = $bot->get(Chat::class);
 
         // Ensure the chat record exists before proceeding
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
@@ -49,7 +50,7 @@ class SettingsConversation extends InlineMenu
             )
             ->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: '❌ ' . trans('common.close'),
+                    text: trans('telegram.close'),
                     callback_data: 'settings:cancel@end'
                 )
             )
@@ -62,7 +63,7 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
@@ -79,7 +80,7 @@ class SettingsConversation extends InlineMenu
             ->chunk(2)
             ->each(fn ($row) => $this->addButtonRow(...$row->values()));
 
-        $this->addButtonRow(InlineKeyboardButton::make(trans('settings.back'), callback_data: 'languages:back@start'));
+        $this->addButtonRow(InlineKeyboardButton::make(trans('telegram.button_back'), callback_data: 'languages:back@start'));
 
         $this->showMenu();
     }
@@ -92,18 +93,28 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
 
+        $currentLanguage = $chat->settings()->get(SettingsKeys::LANGUAGE->value);
+
+        // If same language selected, go back to main menu
+        if ($currentLanguage === $language) {
+            $bot->answerCallbackQuery();
+            $this->start($bot);
+            return;
+        }
+
         // Use the settings relationship, now safely typed as Chat
-        $chat->settings()->set('language', $language);
+        $chat->settings()->set(SettingsKeys::LANGUAGE->value, $language);
 
         // Fix: Use ternary operator to handle potential empty string/null for language
         App::setLocale($language ?: config('app.locale'));
 
-        $this->handleLanguages($bot);
+        $bot->answerCallbackQuery();
+        $this->start($bot);
     }
 
     protected function handleGender(Nutgram $bot): void
@@ -112,7 +123,7 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
@@ -135,7 +146,7 @@ class SettingsConversation extends InlineMenu
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
-                trans('settings.back'),
+                trans('telegram.button_back'),
                 callback_data: 'gender:back@start'
             )
         );
@@ -151,15 +162,25 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
 
-        // Use the settings relationship, now safely typed as Chat
-        $chat->settings()->set('gender', $genderValue);
+        $currentGender = $chat->settings()->get(SettingsKeys::GENDER->value);
 
-        $this->handleGender($bot);
+        // If same gender selected, go back to main menu
+        if ($currentGender === $genderValue) {
+            $bot->answerCallbackQuery();
+            $this->start($bot);
+            return;
+        }
+
+        // Use the settings relationship, now safely typed as Chat
+        $chat->settings()->set(SettingsKeys::GENDER->value, $genderValue);
+
+        $bot->answerCallbackQuery();
+        $this->start($bot);
     }
 
     protected function handleConfession(Nutgram $bot): void
@@ -168,7 +189,7 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
@@ -199,7 +220,7 @@ class SettingsConversation extends InlineMenu
 
         $this->addButtonRow(
             InlineKeyboardButton::make(
-                trans('settings.back'),
+                trans('telegram.button_back'),
                 callback_data: 'confession:back@start'
             )
         );
@@ -215,15 +236,25 @@ class SettingsConversation extends InlineMenu
         $chat = Chat::find($bot->userId());
 
         if (!$chat) {
-            $bot->sendMessage(trans('error.chat_not_found'));
+            $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
             return;
         }
 
-        // Use the settings relationship, now safely typed as Chat
-        $chat->settings()->set('confession', (int)$confessionId);
+        $currentConfession = $chat->settings()->get(SettingsKeys::CONFESSION->value);
 
-        $this->handleConfession($bot);
+        // If same confession selected, go back to main menu
+        if ($currentConfession == $confessionId) {
+            $bot->answerCallbackQuery();
+            $this->start($bot);
+            return;
+        }
+
+        // Use the settings relationship, now safely typed as Chat
+        $chat->settings()->set(SettingsKeys::CONFESSION->value, (int)$confessionId);
+
+        $bot->answerCallbackQuery();
+        $this->start($bot);
     }
 
 
@@ -232,12 +263,17 @@ class SettingsConversation extends InlineMenu
      */
     protected function getSettingsMainMessage(Chat $chat): string
     {
-        $currentLanguage = $this->getLanguageName($chat->settings()->get('language'));
-        $currentGender = $this->getGenderDisplay($chat->settings()->get('gender'));
+        $currentLanguage = $this->getLanguageName($chat->settings()->get(SettingsKeys::LANGUAGE->value));
+        $currentGender = $this->getGenderDisplay($chat->settings()->get(SettingsKeys::GENDER->value));
         // Correcting property to 'confession' based on setConfession logic
-        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession'));
+        $currentConfession = $this->getConfessionDisplay($chat->settings()->get(SettingsKeys::CONFESSION->value));
 
-        return "Current settings:\n\n💬 Language: " . $currentLanguage . "\n👤 Gender: " . $currentGender . "\n🙏 Confession: " . $currentConfession;
+        // Localized message assembly using interpolation for the 'main' key
+        return trans('settings.main', [
+            SettingsKeys::LANGUAGE->value => $currentLanguage,
+            SettingsKeys::GENDER->value => $currentGender,
+            SettingsKeys::CONFESSION->value => $currentConfession,
+        ]);
     }
 
     /**
@@ -245,9 +281,10 @@ class SettingsConversation extends InlineMenu
      */
     protected function getLanguageSettingsMessage(Chat $chat): string
     {
-        $currentLanguage = $this->getLanguageName($chat->settings()->get('language'));
+        $currentLanguage = $this->getLanguageName($chat->settings()->get(SettingsKeys::LANGUAGE->value));
 
-        return "Language settings\n\nCurrent language: " . $currentLanguage;
+        // Localized message assembly using interpolation for current language status
+        return trans('settings.language.description', [SettingsKeys::LANGUAGE->value => $currentLanguage]);
     }
 
     /**
@@ -255,9 +292,10 @@ class SettingsConversation extends InlineMenu
      */
     protected function getGenderSettingsMessage(Chat $chat): string
     {
-        $currentGender = $this->getGenderDisplay($chat->settings()->get('gender'));
+        $currentGender = $this->getGenderDisplay($chat->settings()->get(SettingsKeys::GENDER->value));
 
-        return "Gender settings\n\nCurrent gender: " . $currentGender;
+        // Localized message assembly using interpolation for current gender status
+        return trans('settings.gender.description', [SettingsKeys::GENDER->value => $currentGender]);
     }
 
     /**
@@ -266,9 +304,10 @@ class SettingsConversation extends InlineMenu
     protected function getConfessionSettingsMessage(Chat $chat): string
     {
         // Correcting property to 'confession' based on setConfession logic
-        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession'));
+        $currentConfession = $this->getConfessionDisplay($chat->settings()->get(SettingsKeys::CONFESSION->value));
 
-        return "Confession settings\n\nCurrent confession: " . $currentConfession;
+        // Localized message assembly using interpolation for current confession status
+        return trans('settings.confession.description', [SettingsKeys::CONFESSION->value => $currentConfession]);
     }
 
     /**
@@ -289,7 +328,7 @@ class SettingsConversation extends InlineMenu
     protected function getLanguageName(?string $code): string
     {
         if (!$code) {
-            return 'Not set';
+            return trans('settings.not_set');
         }
 
         $languages = [
@@ -310,14 +349,14 @@ class SettingsConversation extends InlineMenu
     protected function getGenderDisplay(?string $genderValue): string
     {
         if (!$genderValue) {
-            return trans('settings.gender.not_set');
+            return trans('settings.not_set');
         }
 
         $gender = Gender::tryFrom($genderValue);
 
         return $gender
             ? $gender->emoji() . ' ' . $gender->label()
-            : trans('settings.gender.not_set');
+            : trans('settings.not_set');
     }
 
     /**
@@ -326,7 +365,7 @@ class SettingsConversation extends InlineMenu
     protected function getConfessionDisplay(?int $confessionId): string
     {
         if (!$confessionId) {
-            return trans('settings.confession.not_set');
+            return trans('settings.not_set');
         }
 
         /** @var Confession|null $confession */
@@ -335,6 +374,6 @@ class SettingsConversation extends InlineMenu
         // Properties and methods are now correctly recognized on Confession model
         return $confession
             ? $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale())
-            : trans('settings.confession.not_set');
+            : trans('settings.not_set');
     }
 }
