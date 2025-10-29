@@ -46,8 +46,7 @@ class BotButtonResource extends Resource
                             TextInput::make("text.{$lang}")
                                 ->label("Text ({$lang})")
                                 ->required($lang === 'en'),
-                        ])
-                    )->toArray()),
+                        ]))->toArray()),
                 Select::make('callback_data')
                     ->options($callbackOptions)
                     ->required()

@@ -9,4 +9,7 @@ return [
     'button_back' => '⬅️ Înapoi',
     'select_confession' => 'Selectați confesiunea dumneavoastră:',
     'main_menu' => '🏠 Meniul Principal',
+    'learn_about_confession' => '📚 Aflați despre Confesiune',
+    'confession_menu_action' => '⛪ Servicii Confesionale',
+    'confession_menu_sub_action' => '🕰 Servicii Adiționale',
 ];

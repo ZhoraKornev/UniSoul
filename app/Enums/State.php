@@ -29,12 +29,4 @@ enum State: int
     {
         return $this->value >= 10 && $this->value < 20;
     }
-
-    /**
-     * Check if the user is in a temporary flow state (3x group).
-     */
-    public function isFlow(): bool
-    {
-        return $this->value >= 30 && $this->value < 40;
-    }
 }

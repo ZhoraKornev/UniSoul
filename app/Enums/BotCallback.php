@@ -14,5 +14,4 @@ enum BotCallback: string
     // Confession list and selection flow
     case ConfessionListMenu = 'confession_list_menu';
     case ViewConfession = 'view_confession'; // Used when selecting a specific Confession
-
 }

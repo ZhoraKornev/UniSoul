@@ -15,4 +15,3 @@ class VerifyCsrfToken extends Middleware
         '/telegram/webhook', // Exclude Telegram webhook from CSRF protection
     ];
 }
-

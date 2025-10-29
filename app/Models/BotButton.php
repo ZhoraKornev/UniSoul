@@ -10,10 +10,11 @@ use Spatie\Translatable\HasTranslations;
 
 /**
  * @property int $id
- * @property int|null $parent_id Links to the parent button ID for nested menus. Null for top-level menu buttons.
- * @property array<array-key, mixed> $text The text displayed on the button in Telegram (e.g., "Male", "Settings").
- * @property string $callback_data The unique string sent back to the bot when the button is pressed (e.g., "GENDER_MALE").
- * @property int $order The display order of the button within its row or parent menu.
+ * @property int|null $parent_id
+ * @property array<array-key, mixed> $text
+ * @property string|null $callback_data
+ * @property int $order
+ * @property int $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BotButton> $children
@@ -23,6 +24,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereCallbackData($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereId($value)
@@ -38,7 +40,8 @@ use Spatie\Translatable\HasTranslations;
  */
 class BotButton extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory;
+    use HasTranslations;
 
     public array $translatable = ['text'];
 

@@ -5,37 +5,118 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="Raw code for start project">
-      <change afterPath="$PROJECT_DIR$/app/Enums/ConfessionActions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Enums/ConfessionSubActions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/CancelCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/FeedbackCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/HelpCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Commands/SettingsCommand.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/DonateConversation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/FeedbackConversation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Middleware/AboutCommand.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PrivacyPolicy " afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Enums/Gender.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Helpers/Utils.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Chat.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Statistic.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Middleware/CheckMaintenance.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/Middleware/CollectChatData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/developer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_140940_create_chat_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_141826_create_model_settings_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_232910_create_statistics_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/de/start.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/about.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/common.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/donate.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/feedback.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/maintenance.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/optimize.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/privacy.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/settings.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/start.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/stats.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/en/watermark.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/ka/start.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/ro/start.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lang/uk/start.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/phpstan.neon" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/about.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/donate/caption.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/donate/invalid.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/donate/main.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/exception.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/feedback/ask.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/feedback/cancelled.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/feedback/received.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/feedback/thanks.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/feedback/wrong.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/maintenance.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/offline.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/privacy.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/settings/language.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/settings/main.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/settings/watermark.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/start.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/stats/empty.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/messages/stats/template.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/phpunit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpunit.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Contracts/ActionHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Contracts/ActionHandler.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Enums/BotCallback.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Enums/ConfessionActions.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/ConfessionActions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Enums/State.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/State.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TelegramController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TelegramController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/EncryptCookies.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/EncryptCookies.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/PreventRequestsDuringMaintenance.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/PreventRequestsDuringMaintenance.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/RedirectIfAuthenticated.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/RedirectIfAuthenticated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/TrimStrings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/TrimStrings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/TrustHosts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/TrustHosts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/TrustProxies.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/TrustProxies.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/ValidateSignature.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/ValidateSignature.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/BotButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BotButton.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Confession.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Confession.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Country.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Country.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/UserConfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/UserMessage.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/TelegramBotService.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Commands/CancelCommand.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Commands/StartCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Commands/StartCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuListHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionSelectHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionsSelectedHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/DynamicMenuHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/DynamicMenuHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/BackNavigationHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/BackNavigationHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionMenuListHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/ConfessionsSelectedHandler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Middleware/AboutCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Commands/AboutCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Middleware/SetUserLocaleMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Middleware/SetUserLocaleMiddleware.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/nutgram.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/nutgram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/UserConfigFactory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_000000_create_user_configs_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_000001_create_user_messages_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/de/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/de/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/en/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/en/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/ka/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ka/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/ro/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ro/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lang/uk/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/uk/telegram.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/CreatesApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/CreatesApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/TelegramWebhookTest.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/telegram-stickeroptimizer-master/composer.json" />
+      <option value="$PROJECT_DIR$/telegram-mermaid-master/composer.json" />
+    </option>
   </component>
   <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
@@ -218,6 +299,9 @@
       <path value="$PROJECT_DIR$/vendor/barryvdh/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-ide-helper" />
       <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/vendor/glorand/laravel-model-settings" />
+      <path value="$PROJECT_DIR$/vendor/laracraft-tech/laravel-date-scopes" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -236,7 +320,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/projects/tg_bot/app/Telegram/Commands",
+    "last_opened_file_path": "/projects/tg_bot/lang/ka",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -253,11 +337,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/Telegram/Commands" />
-      <recent name="$PROJECT_DIR$/app/Telegram" />
       <recent name="$PROJECT_DIR$/lang/ka" />
-      <recent name="$PROJECT_DIR$/lang" />
-      <recent name="$PROJECT_DIR$/lang/en" />
+      <recent name="$PROJECT_DIR$/lang/de" />
+      <recent name="$PROJECT_DIR$/lang/ro" />
+      <recent name="$PROJECT_DIR$/lang/uk" />
+      <recent name="$PROJECT_DIR$/database/migrations" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -293,6 +377,8 @@
       <workItem from="1761559749452" duration="27110000" />
       <workItem from="1761641122033" duration="1355000" />
       <workItem from="1761655765597" duration="6681000" />
+      <workItem from="1761686887158" duration="4891000" />
+      <workItem from="1761726255351" duration="18365000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />

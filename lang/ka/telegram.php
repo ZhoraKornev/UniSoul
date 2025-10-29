@@ -9,4 +9,7 @@ return [
     'button_back' => '⬅️ უკან',
     'select_confession' => 'აირჩიეთ თქვენი კონფესია:',
     'main_menu' => '🏠 მთავარი მენიუ',
+    'learn_about_confession' => '📚 კონფესიის შესახებ',
+    'confession_menu_action' => '⛪ კონფესიის სერვისები',
+    'confession_menu_sub_action' => '🕰 დამატებითი სერვისები',
 ];

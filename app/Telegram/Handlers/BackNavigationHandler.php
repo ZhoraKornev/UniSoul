@@ -3,84 +3,49 @@
 namespace App\Telegram\Handlers;
 
 use App\Contracts\ActionHandler;
+use App\Enums\BotCallback;
 use App\Models\BotButton;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class BackNavigationHandler implements ActionHandler
 {
     public function handle(Nutgram $bot): void
     {
-        // Get the text that triggered this handler
-        $text = $bot->message()?->text ?? $bot->callbackQuery()?->data;
+        $callbackData = $bot->callbackQuery()?->data;
 
-        // Find the button that was pressed
-        $currentButton = BotButton::whereHas('translations', function ($query) use ($text) {
-            $query->where('value', $text);
-        })->first();
-
-        if ($currentButton && $currentButton->parent_id) {
-            // Go back to parent menu
-            $this->showMenu($bot, $currentButton->parent_id);
+        if ($callbackData === 'confession_menu') {
+            $this->showConfessionMenu($bot);
         } else {
-            // Go back to main menu (start command level)
             $this->showMainMenu($bot);
         }
     }
 
     public function isSupport(string $actionCallbackName): bool
     {
-        // Support any "back" button text
-        $backTranslations = [
-            __('telegram.button_back'),
-            '◀️ Назад',
-            '◀️ Back',
-            '⬅️ Назад',
-            '⬅️ Back',
-        ];
-
-        foreach ($backTranslations as $translation) {
-            if (str_contains($actionCallbackName, $translation) ||
-                $actionCallbackName === $translation) {
-                return true;
-            }
-        }
-
-        return false;
+        return $actionCallbackName === BotCallback::BackButton->value ||
+               $actionCallbackName === 'confession_menu';
     }
 
-    private function showMenu(Nutgram $bot, int $parentId): void
+    private function showConfessionMenu(Nutgram $bot): void
     {
-        $parent = BotButton::find($parentId);
+        $confessionButton = BotButton::where('callback_data', 'confession_menu')->first();
+        $buttons = BotButton::where('parent_id', $confessionButton->id)->orderBy('order')->get();
 
-        if (!$parent) {
-            $this->showMainMenu($bot);
-            return;
-        }
-
-        $buttons = BotButton::where('parent_id', $parentId)
-            ->orderBy('order')
-            ->get();
-
-        $keyboard = ReplyKeyboardMarkup::make(resize_keyboard: true);
+        $keyboard = InlineKeyboardMarkup::make();
 
         foreach ($buttons as $button) {
             $keyboard->addRow(
-                KeyboardButton::make($button->getTranslation('text', app()->getLocale()))
-            );
-        }
-
-        // Add back button if not at root level
-        if ($parent->parent_id !== null) {
-            $keyboard->addRow(
-                KeyboardButton::make(__('telegram.button_back'))
+                InlineKeyboardButton::make(
+                    text: $button->getTranslation('text', app()->getLocale()),
+                    callback_data: $button->callback_data
+                )
             );
         }
 
         $bot->sendMessage(
-            text: $parent->getTranslation('message', app()->getLocale())
-            ?? __('telegram.select_option'),
+            text: __('telegram.confession_menu'),
             reply_markup: $keyboard
         );
     }
@@ -89,11 +54,14 @@ class BackNavigationHandler implements ActionHandler
     {
         $buttons = BotButton::whereNull('parent_id')->orderBy('order')->get();
 
-        $keyboard = ReplyKeyboardMarkup::make(resize_keyboard: true);
+        $keyboard = InlineKeyboardMarkup::make();
 
         foreach ($buttons as $button) {
             $keyboard->addRow(
-                KeyboardButton::make($button->getTranslation('text', app()->getLocale()))
+                InlineKeyboardButton::make(
+                    text: $button->getTranslation('text', app()->getLocale()),
+                    callback_data: $button->callback_data
+                )
             );
         }
 

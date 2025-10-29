@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Telegram\Middleware;
+namespace App\Telegram\Commands;
 
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;

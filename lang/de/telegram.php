@@ -9,4 +9,7 @@ return [
     'button_back' => '⬅️ Zurück',
     'select_confession' => 'Wählen Sie Ihre Konfession:',
     'main_menu' => '🏠 Hauptmenü',
+    'learn_about_confession' => '📚 Über Konfession erfahren',
+    'confession_menu_action' => '⛪ Konfessionsdienste',
+    'confession_menu_sub_action' => '🕰 Zusätzliche Dienste',
 ];

@@ -37,14 +37,6 @@ class BotButtonSeeder extends Seeder
             'order' => 1,
         ]);
 
-        // Placeholder for other Main Menu buttons (Help, Settings, etc.)
-        BotButton::create([
-            'parent_id' => null,
-            'text' => ['uk' => '⚙️ Налаштування', 'en' => '⚙️ Settings', 'de' => '⚙️ Einstellungen', 'ro' => '⚙️ Setări', 'ka' => '⚙️ პარამეтри'],
-            'callback_data' => 'placeholder:settings',
-            'order' => 2,
-        ]);
-
         // -----------------------------------------------------------------
         // LEVEL 1: CONFESSION ACTIONS (parent_id = confessionListButton->id)
         // Actions shown immediately after clicking the Main Menu 'Confession' button

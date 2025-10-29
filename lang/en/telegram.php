@@ -9,4 +9,7 @@ return [
     'button_back' => '⬅️ Back',
     'select_confession' => 'Select your confession:',
     'main_menu' => '🏠 Main Menu',
+    'learn_about_confession' => '📚 Learn About Confession',
+    'confession_menu_action' => '⛪ Confession Services',
+    'confession_menu_sub_action' => '🕰 Additional Services',
 ];

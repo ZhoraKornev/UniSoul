@@ -2,11 +2,9 @@
 
 namespace App\Telegram\Commands;
 
-use App\Models\BotButton;
+use App\Telegram\Conversations\MainMenuConversation;
 use SergiX44\Nutgram\Handlers\Type\Command;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton; // Використовуємо Inline
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup; // Використовуємо Inline
 
 class StartCommand extends Command
 {
@@ -16,22 +14,6 @@ class StartCommand extends Command
 
     public function handle(Nutgram $bot): void
     {
-        $buttons = BotButton::whereNull('parent_id')->orderBy('order')->get();
-
-        $keyboard = InlineKeyboardMarkup::make();
-
-        foreach ($buttons as $button) {
-            $keyboard->addRow(
-                InlineKeyboardButton::make(
-                    text: $button->getTranslation('text', app()->getLocale()),
-                    callback_data: $button->callback_data
-                )
-            );
-        }
-
-        $bot->sendMessage(
-            text: trans('telegram.welcome_message'),
-            reply_markup: $keyboard
-        );
+        MainMenuConversation::begin($bot);
     }
 }

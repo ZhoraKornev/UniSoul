@@ -29,3 +29,4 @@ Homestead.json
 .phpactor.json
 auth.json
 /_ide_helper.php
+/.phpstorm.meta.php

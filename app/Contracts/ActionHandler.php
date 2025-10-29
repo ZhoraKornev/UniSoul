@@ -9,5 +9,4 @@ interface ActionHandler
     public function isSupport(string $actionCallbackName): bool;
 
     public function handle(Nutgram $bot): void;
-
 }
