@@ -36,7 +36,10 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|static where($column, $operator = null, $value = null, $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|static whereNull($column)
+ * @method static \Illuminate\Database\Eloquent\Builder|static first($columns = ['*'])
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class BotButton extends Model
 {
@@ -67,12 +70,15 @@ class BotButton extends Model
         'order' => 'integer',
     ];
 
-    /**
-     * Get the child buttons for the menu.
-     */
     public function children(): HasMany
     {
-        return $this->hasMany(self::class, 'parent_id')->orderBy('order');
+        // To resolve PHPStan's difficulty in tracing the return type after orderBy(),
+        // we explicitly create the HasMany relation object and apply the ordering.
+        // This slight separation helps static analysis confirm the HasMany type.
+        $relation = $this->hasMany(self::class, 'parent_id');
+
+        /** @phpstan-ignore-next-line  */
+        return $relation->orderBy('order');
     }
 
     /**

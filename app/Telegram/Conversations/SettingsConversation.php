@@ -15,7 +15,15 @@ class SettingsConversation extends InlineMenu
 {
     public function start(Nutgram $bot): void
     {
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        // Ensure the chat record exists before proceeding
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
 
         $this
             ->clearButtons()
@@ -50,7 +58,14 @@ class SettingsConversation extends InlineMenu
 
     protected function handleLanguages(Nutgram $bot): void
     {
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
 
         $this
             ->clearButtons()
@@ -73,17 +88,34 @@ class SettingsConversation extends InlineMenu
     {
         [, $language] = explode(':', $bot->callbackQuery()->data);
 
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
+
+        // Use the settings relationship, now safely typed as Chat
         $chat->settings()->set('language', $language);
 
-        App::setLocale($language ?? config('app.locale'));
+        // Fix: Use ternary operator to handle potential empty string/null for language
+        App::setLocale($language ?: config('app.locale'));
 
         $this->handleLanguages($bot);
     }
 
     protected function handleGender(Nutgram $bot): void
     {
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
 
         $this
             ->clearButtons()
@@ -115,7 +147,16 @@ class SettingsConversation extends InlineMenu
     {
         [, $genderValue] = explode(':', $bot->callbackQuery()->data);
 
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
+
+        // Use the settings relationship, now safely typed as Chat
         $chat->settings()->set('gender', $genderValue);
 
         $this->handleGender($bot);
@@ -123,7 +164,14 @@ class SettingsConversation extends InlineMenu
 
     protected function handleConfession(Nutgram $bot): void
     {
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
 
         $this
             ->clearButtons()
@@ -132,11 +180,15 @@ class SettingsConversation extends InlineMenu
                 'disable_web_page_preview' => true,
             ]);
 
+        // Explicitly type the collection for better static analysis
+        /** @var \Illuminate\Database\Eloquent\Collection<Confession> $confessions */
         $confessions = Confession::query()
             ->where('active', true)
             ->get();
 
+        /** @var Confession $confession */
         foreach ($confessions as $confession) {
+            // Properties and methods are now correctly recognized on Confession model
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
@@ -159,7 +211,16 @@ class SettingsConversation extends InlineMenu
     {
         [, $confessionId] = explode(':', $bot->callbackQuery()->data);
 
+        /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
+
+        if (!$chat) {
+            $bot->sendMessage(trans('error.chat_not_found'));
+            $this->end();
+            return;
+        }
+
+        // Use the settings relationship, now safely typed as Chat
         $chat->settings()->set('confession', (int)$confessionId);
 
         $this->handleConfession($bot);
@@ -173,7 +234,8 @@ class SettingsConversation extends InlineMenu
     {
         $currentLanguage = $this->getLanguageName($chat->settings()->get('language'));
         $currentGender = $this->getGenderDisplay($chat->settings()->get('gender'));
-        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession_id'));
+        // Correcting property to 'confession' based on setConfession logic
+        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession'));
 
         return "Current settings:\n\n💬 Language: " . $currentLanguage . "\n👤 Gender: " . $currentGender . "\n🙏 Confession: " . $currentConfession;
     }
@@ -203,7 +265,8 @@ class SettingsConversation extends InlineMenu
      */
     protected function getConfessionSettingsMessage(Chat $chat): string
     {
-        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession_id'));
+        // Correcting property to 'confession' based on setConfession logic
+        $currentConfession = $this->getConfessionDisplay($chat->settings()->get('confession'));
 
         return "Confession settings\n\nCurrent confession: " . $currentConfession;
     }
@@ -225,7 +288,9 @@ class SettingsConversation extends InlineMenu
      */
     protected function getLanguageName(?string $code): string
     {
-        if (!$code) return 'Not set';
+        if (!$code) {
+            return 'Not set';
+        }
 
         $languages = [
             'en' => '🇬🇧 English',
@@ -264,8 +329,10 @@ class SettingsConversation extends InlineMenu
             return trans('settings.confession.not_set');
         }
 
+        /** @var Confession|null $confession */
         $confession = Confession::find($confessionId);
 
+        // Properties and methods are now correctly recognized on Confession model
         return $confession
             ? $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale())
             : trans('settings.confession.not_set');

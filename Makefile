@@ -48,7 +48,7 @@ lint:
 	./vendor/bin/phpstan analyse
 	@echo "--- 7. Запуск перевірки стандартів кодування (PHPCS) на app та src..."
 # Використовуємо стандарт PSR12. Оновіть шляхи та стандарт, якщо потрібно.
-	./vendor/bin/phpcs --standard=PSR12 app src
+	./vendor/bin/phpcs --standard=PSR12 app tests
 
 fix:
 	@echo "--- 8. Автоматичне виправлення стандартів кодування (PHPCBF)..."

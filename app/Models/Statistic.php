@@ -91,11 +91,12 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Statistic whereId($value)
  * @method static Builder<static>|Statistic whereValue($value)
  * @method static Builder<static>|Statistic yearToDate(?string $column = null)
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Statistic extends Model
 {
     use DateScopes;
+
     public $timestamps = false;
     protected static $unguarded = true;
 

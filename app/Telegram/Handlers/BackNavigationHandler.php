@@ -36,6 +36,7 @@ class BackNavigationHandler implements ActionHandler
         $keyboard = InlineKeyboardMarkup::make();
 
         foreach ($buttons as $button) {
+            /** @var BotButton $button */
             $keyboard->addRow(
                 InlineKeyboardButton::make(
                     text: $button->getTranslation('text', app()->getLocale()),
@@ -57,6 +58,7 @@ class BackNavigationHandler implements ActionHandler
         $keyboard = InlineKeyboardMarkup::make();
 
         foreach ($buttons as $button) {
+            /** @var BotButton $button */
             $keyboard->addRow(
                 InlineKeyboardButton::make(
                     text: $button->getTranslation('text', app()->getLocale()),

@@ -37,7 +37,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocales(string $column, array $locales)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Confession extends Model
 {

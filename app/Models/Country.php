@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Country extends Model
 {

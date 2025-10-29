@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\State; // Using the updated Enum name
+use App\Enums\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,7 +46,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTelegramUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class User extends Authenticatable
 {

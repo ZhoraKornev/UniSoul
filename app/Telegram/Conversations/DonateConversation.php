@@ -48,6 +48,6 @@ class DonateConversation extends Conversation
 
         $this->end();
 
-        stats('donate.invoice', ['value' => $amount]);
+        stats('donate.invoice', value: ['value' => $amount]);
     }
 }

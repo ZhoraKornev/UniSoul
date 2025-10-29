@@ -17,6 +17,7 @@ class MainMenuConversation extends InlineMenu
         $this->menuText(trans('telegram.welcome_message'));
 
         foreach ($buttons as $button) {
+            /** @var BotButton $button */
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $button->getTranslation('text', app()->getLocale()),

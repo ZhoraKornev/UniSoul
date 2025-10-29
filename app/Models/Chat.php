@@ -99,7 +99,8 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Chat whereUpdatedAt($value)
  * @method static Builder<static>|Chat whereUsername($value)
  * @method static Builder<static>|Chat yearToDate(?string $column = null)
- * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Model|static updateOrCreate(array $attributes, array $values = [])
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Chat extends Model
 {
@@ -114,7 +115,7 @@ class Chat extends Model
 
     protected bool $persistSetting = true;
 
-    public $defaultSettings =[
+    public $defaultSettings = [
         'gender' => Gender::OTHER->value,
         'language' => 'en',
         'confession' => null,
@@ -142,6 +143,8 @@ class Chat extends Model
             return null;
         }
 
+        // We explicitly type-hint the result to satisfy PHPStan.
+        /** @var \App\Models\Chat|null $chat */
         $chat = self::find($user->id);
 
         return $chat ?? null;
@@ -151,8 +154,8 @@ class Chat extends Model
         Builder $query,
         string $setting,
         string $operator,
-                $value,
-        bool $filterOnMissing = null
+        $value,
+        ?bool $filterOnMissing = null // Explicitly nullable type added
     ): Builder {
         return $query->where(function (Builder $query) use ($value, $operator, $setting, $filterOnMissing) {
             return $query->when(
@@ -171,16 +174,7 @@ class Chat extends Model
                         fn (Builder $query) => $query->where("settings->$setting", $operator, $value)
                     );
                 }
-
             );
         });
-    }
-
-    public function scopeOfThisYear(Builder $query): Builder
-    {
-        $createdColumnName = self::CREATED_AT !== 'created_at' ? self::CREATED_AT : config('date-scopes.created_column');
-        $now = CarbonImmutable::now();
-
-        return $query->whereBetween($createdColumnName, [$now->startOfYear(), $now->endOfYear()]);
     }
 }

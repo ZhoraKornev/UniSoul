@@ -33,7 +33,7 @@ class CollectChatData
         //collect users
         $chat = DB::transaction(function () use ($chatType, $user) {
 
-            //save or update chat
+            /** @var Chat $chat */
             $chat = Chat::updateOrCreate([
                 'chat_id' => $user->id,
             ], [

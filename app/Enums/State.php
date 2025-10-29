@@ -27,6 +27,11 @@ enum State: int
      */
     public function isActive(): bool
     {
-        return $this->value >= 10 && $this->value < 20;
+        // Changed to use the match expression for clarity and to satisfy PHPStan's non-trivial comparison check.
+        // It specifically targets cases 10 and 11, which are the only 'active' states.
+        return match ($this) {
+            self::Ready, self::ActiveConversation => true,
+            default => false,
+        };
     }
 }

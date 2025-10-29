@@ -65,7 +65,7 @@ class FeedbackConversation extends Conversation
         }
 
         //get the input
-        $this->feedback = $bot->message()?->text;
+        $this->feedback = $bot->message()->text;
 
         //send feedback to dev
         $bot->sendMessage(

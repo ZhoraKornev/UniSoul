@@ -8,17 +8,24 @@ use App\Enums\ConfessionActions;
 use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use App\Telegram\Conversations\MainMenuConversation;
+
+// Added: Assuming this is where backToMain points
 
 class ConfessionConversation extends InlineMenu
 {
     public function start(Nutgram $bot): void
     {
+        // Explicitly type the collection elements for static analysis
+        /** @var \Illuminate\Database\Eloquent\Collection<Confession> $confessions */
         $confessions = Confession::where('active', true)->get();
 
         $this->clearButtons();
         $this->menuText(__('telegram.select_confession'));
 
+        /** @var Confession $confession */
         foreach ($confessions as $confession) {
+            // Properties and methods are now recognized on Confession (L24, L25 errors resolved)
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
@@ -43,6 +50,7 @@ class ConfessionConversation extends InlineMenu
 
     public function handleConfessionMenu(Nutgram $bot): void
     {
+        /** @var BotButton|null $confessionButton */
         $confessionButton = BotButton::where('callback_data', 'confession_menu')->first();
 
         if (!$confessionButton) {
@@ -50,14 +58,17 @@ class ConfessionConversation extends InlineMenu
             return;
         }
 
+        /** @var \Illuminate\Database\Eloquent\Collection<BotButton> $buttons */
         $buttons = BotButton::where('parent_id', $confessionButton->id)->orderBy('order')->get();
 
         $this->clearButtons();
         $this->menuText(__('telegram.confession_menu'));
 
+        /** @var BotButton $button */
         foreach ($buttons as $button) {
             $this->addButtonRow(
                 InlineKeyboardButton::make(
+                // getTranslation is now recognized on BotButton (No explicit error, but good practice)
                     text: $button->getTranslation('text', app()->getLocale()),
                     callback_data: $button->callback_data . '@handle' . ucfirst(str_replace('_', '', $button->callback_data))
                 )
@@ -81,8 +92,9 @@ class ConfessionConversation extends InlineMenu
 
     public function showConfession(Nutgram $bot): void
     {
-        // Extract confession ID from callback data
-        $callbackData = $bot->callbackQuery()?->data ?? '';
+        // Refactored nullsafe access (L85 error resolved)
+        $callbackQuery = $bot->callbackQuery();
+        $callbackData = $callbackQuery ? $callbackQuery->data : '';
         preg_match('/confession:(\d+)/', $callbackData, $matches);
         $id = $matches[1] ?? null;
 
@@ -92,6 +104,7 @@ class ConfessionConversation extends InlineMenu
             return;
         }
 
+        /** @var Confession|null $confession */
         $confession = Confession::find($id);
 
         if (!$confession) {
@@ -102,6 +115,7 @@ class ConfessionConversation extends InlineMenu
 
         $this->clearButtons();
         $this->menuText(
+        // Properties and methods are now recognized on Confession (L61 error resolved)
             $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()) . "\n\n" .
             $confession->getTranslation('description', app()->getLocale())
         );
@@ -131,8 +145,9 @@ class ConfessionConversation extends InlineMenu
 
     public function handleAction(Nutgram $bot): void
     {
-        // Extract action and ID from callback data
-        $callbackData = $bot->callbackQuery()?->data ?? '';
+        // Refactored nullsafe access (L135 error resolved)
+        $callbackQuery = $bot->callbackQuery();
+        $callbackData = $callbackQuery ? $callbackQuery->data : '';
         preg_match('/action:([^:]+):(\d+)/', $callbackData, $matches);
         $action = $matches[1] ?? null;
         $id = $matches[2] ?? null;
@@ -143,6 +158,7 @@ class ConfessionConversation extends InlineMenu
             return;
         }
 
+        /** @var Confession|null $confession */
         $confession = Confession::find($id);
 
         if (!$confession) {
@@ -166,6 +182,7 @@ class ConfessionConversation extends InlineMenu
 
     public function backToMain(Nutgram $bot): void
     {
+        // Ensure MainMenuConversation is correctly imported and available
         MainMenuConversation::begin($bot);
     }
 
