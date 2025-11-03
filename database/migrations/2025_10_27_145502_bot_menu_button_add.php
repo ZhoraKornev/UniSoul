@@ -10,13 +10,23 @@ return new class extends Migration
     {
         Schema::create('bot_buttons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->nullable()->constrained('bot_buttons')->onDelete('cascade');
-            $table->json('text'); // Translatable button text
-            $table->string('callback_data')->nullable(); // Action identifier for handlers
-            $table->integer('order')->default(0); // Display order
-            $table->boolean('active')->default(true); // Enable/disable button
+
+            $table->foreignId('parent_id')
+                ->nullable()
+                ->constrained('bot_buttons')
+                ->onDelete('cascade');
+
+            $table->nullableMorphs('entity'); // <─ Laravel auto sets index
+
+            $table->json('text');
+            $table->string('callback_data'); // enum value identifier
+
+            $table->unsignedInteger('order')->default(0);
+            $table->boolean('active')->default(true);
+
             $table->timestamps();
 
+            // Extra indexes
             $table->index(['parent_id', 'order']);
             $table->index('callback_data');
         });
@@ -27,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('bot_buttons');
     }
 };
+

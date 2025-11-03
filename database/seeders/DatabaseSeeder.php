@@ -12,9 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ConfessionSeeder::class, // Додає країни та конфесії
-            UserSeeder::class,       // Додає адміністраторів
-            BotButtonSeeder::class,       // Додає адміністраторів
+            CountriesSeeder::class,
+            ConfessionSeeder::class,
+            UserSeeder::class,
+            BotButtonSeeder::class,
+            ConfessionBotButtonSeeder::class,
         ]);
     }
 }

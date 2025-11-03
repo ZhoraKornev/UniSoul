@@ -23,16 +23,14 @@ class BotButtonResource extends Resource
 {
     protected static ?string $model = BotButton::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleBottomCenterText;
 
     protected static ?string $recordTitleAttribute = 'text';
 
     public static function form(Schema $schema): Schema
     {
-        $callbackLabels = self::getCallbackTranslationLabels();
-
         $callbackOptions = collect(BotCallback::cases())
-            ->mapWithKeys(fn ($enum) => [$enum->value => $callbackLabels[$enum->value] ?? $enum->value])
+            ->mapWithKeys(fn ($enum) => [$enum->value => $enum->label()])
             ->toArray();
 
         return $schema
@@ -104,27 +102,5 @@ class BotButtonResource extends Resource
         ];
     }
 
-    /**
-     * Provides user-friendly labels for the BotCallback enum values.
-     * In a real application, this would be loaded from a translation file (e.g., lang/en/bot_callbacks.php).
-     */
-    protected static function getCallbackTranslationLabels(): array
-    {
-        return [
-            // Main menu items
-            'confession_menu' => '🙏 Confession Menu',
-            'help_menu' => '❓ Help Menu',
-            'settings_menu' => '⚙️ Settings Menu',
-            'main_menu' => '🔙 Main Menu',
-            'back_to_main' => '⬅️ Back to Main Menu',
 
-            // Confession submenu
-            'view_confessions' => '📖 View Confessions',
-
-            // Settings submenu
-            'set_lang' => '🌐 Change Language',
-            'set_gender' => '🚻 Specify Gender',
-            'set_country' => '🗺️ Change Country',
-        ];
-    }
 }

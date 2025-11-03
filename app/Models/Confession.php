@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\BotCallback;
 use App\Enums\ConfessionSubActions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Webpatser\Countries\Countries;
 
 /**
  * @property int $id
@@ -39,6 +42,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereUpdatedAt($value)
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
+
 class Confession extends Model
 {
     use HasFactory;
@@ -49,45 +53,45 @@ class Confession extends Model
         'full_name',
         'description',
         'emoji',
-        'country_ids',
         'active',
-        'available_actions', // Додано нове поле
     ];
 
-    /**
-     * Поля, які будуть перекладатися.
-     */
     public array $translatable = [
         'name',
         'full_name',
-        'description'
+        'description',
     ];
 
-    /**
-     * Кастування для JSON полів.
-     */
     protected $casts = [
-        'country_ids' => 'array',
         'active' => 'boolean',
-        'available_actions' => 'array', // Зберігаємо як JSON-масив у БД, PHP перетворює його на звичайний масив
     ];
 
+    public function countries(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Countries::class,
+            'confession_country',
+            'confession_id',
+            'country_iso_3166_2',
+            'id',
+            'iso_3166_2'
+        );
+    }
 
     /**
-     * Отримати об'єкти ConfessionSubActions для доступних дій.
-     * Це дозволяє отримати доступ до енумів, а не просто рядків.
+     * Get all BotCallback enum actions available for this confession
      */
     public function getAvailableActionEnumsAttribute(): array
     {
-        // Перетворюємо масив рядків (що зберігається в available_actions) на масив об'єктів Enum
-        return array_map(function ($actionValue) {
-            try {
-                // Використовуємо ConfessionSubActions::tryFrom для безпечного перетворення
-                return ConfessionSubActions::tryFrom($actionValue);
-            } catch (\ValueError $e) {
-                // Ігноруємо або логуємо невідомі значення
-                return null;
-            }
-        }, $this->available_actions ?? []);
+        return BotButton::query()
+            ->where('entity_type', self::class)
+            ->where('entity_id', $this->id)
+            ->whereNotNull('callback_data')
+            ->pluck('callback_data')
+            ->map(fn ($value) => BotCallback::tryFrom($value))
+            ->filter()
+            ->values()
+            ->toArray();
     }
 }
+

@@ -6,48 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Створення таблиці для країн, якщо вона ще не існує
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('confessions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('code', 2)->unique(); // Наприклад, 'UA', 'DE', 'GE'
+            $table->json('name');
+            $table->json('full_name');
+            $table->json('description');
+            $table->string('emoji', 10);
+            $table->boolean('active')->default(false);
+            $table->json('available_actions')->nullable();
             $table->timestamps();
         });
 
-        // Таблиця для конфесій з полем 'countries', яке містить JSON-масив ID країн
-        Schema::create('confessions', function (Blueprint $table) {
-            $table->id();
-            // Поля, які будуть перекладатись, зберігаються як JSON для Spatie Translatable
-            $table->json('name');        // Назва конфесії (Translatable: uk, en, ro, de, ka, ru)
-            $table->json('full_name');   // Повна назва (Translatable)
-            $table->json('description'); // Опис (Translatable)
-
-            $table->string('emoji', 10);
-
-            // Масив країн, у яких поширена конфесія (зберігаємо ID країн)
-            $table->json('country_ids');
-
-            // Активність конфесії
-            $table->boolean('active')->default(false);
-            // ВИПРАВЛЕНО: Видалено ->after('active') з Schema::create
-            $table->json('available_actions')->nullable()
-                ->comment('Доступні дії (послуги) для цієї конфесії, зберігається як масив значень ConfessionSubActions enum.');
-
-            $table->timestamps();
+        Schema::create('confession_country', function (Blueprint $table) {
+            $table->foreignId('confession_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->string('country_iso_3166_2', 2);
+            $table->primary(['confession_id', 'country_iso_3166_2']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::dropIfExists('confession_country');
         Schema::dropIfExists('confessions');
-        Schema::dropIfExists('countries');
     }
 };

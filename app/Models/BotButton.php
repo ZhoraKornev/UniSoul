@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Enums\BotCallback;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property int $id
  * @property int|null $parent_id
  * @property array<array-key, mixed> $text
- * @property string|null $callback_data
+ * @property BotCallback $callback_data
  * @property int $order
  * @property int $active
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -41,6 +43,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder|static first($columns = ['*'])
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
+
 class BotButton extends Model
 {
     use HasFactory;
@@ -48,44 +51,57 @@ class BotButton extends Model
 
     public array $translatable = ['text'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'parent_id', // Null for top-level menus
+        'parent_id',
         'text',
-        'callback_data', // Unique identifier for handler
+        'callback_data',
         'order',
+        'entity_type',
+        'entity_id',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'parent_id' => 'integer',
         'order' => 'integer',
+        'callback_data' => BotCallback::class, // ✅ ENUM CASTING
     ];
+
+    // Polymorphic binding
+    public function entity(): MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function children(): HasMany
     {
-        // To resolve PHPStan's difficulty in tracing the return type after orderBy(),
-        // we explicitly create the HasMany relation object and apply the ordering.
-        // This slight separation helps static analysis confirm the HasMany type.
         $relation = $this->hasMany(self::class, 'parent_id');
-
-        /** @phpstan-ignore-next-line  */
         return $relation->orderBy('order');
     }
 
-    /**
-     * Get the parent button.
-     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * Get enum object from callback_data
+     */
+    public function callbackEnum(): BotCallback
+    {
+        return $this->callback_data;
+    }
+
+    /**
+     * Resolve translated label dynamically
+     */
+    public function label(): string
+    {
+        // If text translation exists, use it
+        if (!empty($this->text)) {
+            return $this->getTranslation('text', app()->getLocale());
+        }
+
+        // Otherwise return enum label
+        return $this->callbackEnum()?->label() ?? '';
     }
 }
