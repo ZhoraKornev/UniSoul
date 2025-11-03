@@ -13,6 +13,8 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
 class MainMenuConversation extends InlineMenu
 {
+    public const CONFESSION_PREFIX = 'view_confession';
+
     public function start(Nutgram $bot): void
     {
         $locale = app()->getLocale();
@@ -49,7 +51,7 @@ class MainMenuConversation extends InlineMenu
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
                         text: $confession->emoji . ' ' . $confession->getTranslation('name', $locale),
-                        callback_data: "view_confession:{$confession->id}@viewConfession"
+                        callback_data: self::CONFESSION_PREFIX . ":{$confession->id}@viewConfession"
                     )
                 );
             }

@@ -27,8 +27,8 @@ class ConfessionBotButtonSeeder extends Seeder
 
     private function seedForConfession(Confession $confession): void
     {
-        $root = BotButton::where('callback_data', BotCallback::ConfessionListMenu->value)->first();
-        if (! $root) {
+        $confessionRootButtonId = BotButton::whereCallbackData(BotCallback::ConfessionListMenu->value)->select('id')->first()?->id;
+        if (! $confessionRootButtonId) {
             return;
         }
 
@@ -37,7 +37,7 @@ class ConfessionBotButtonSeeder extends Seeder
         // LEVEL 1
 
         BotButton::create([
-            'parent_id'     => $root->id,
+            'parent_id'     => $confessionRootButtonId,
             'entity_type'   => Confession::class,
             'entity_id'     => $confessionId,
             'text'          => $this->trans(BotCallback::LearnAboutConfession),
@@ -46,7 +46,7 @@ class ConfessionBotButtonSeeder extends Seeder
         ]);
 
         BotButton::create([
-            'parent_id'     => $root->id,
+            'parent_id'     => $confessionRootButtonId,
             'entity_type'   => Confession::class,
             'entity_id'     => $confessionId,
             'text'          => $this->trans(BotCallback::ViewConfession),
@@ -55,7 +55,7 @@ class ConfessionBotButtonSeeder extends Seeder
         ]);
 
         $menu = BotButton::create([
-            'parent_id'     => $root->id,
+            'parent_id'     => $confessionRootButtonId,
             'entity_type'   => Confession::class,
             'entity_id'     => $confessionId,
             'text'          => $this->trans(BotCallback::ConfessionMenuAction),

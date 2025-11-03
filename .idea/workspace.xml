@@ -4,63 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="feat(i18n): Add new error and &quot;coming soon&quot; keys with translations&#10;&#10;Adds the following new localization strings to the settings/telegram language files:&#10;- `error_invalid_confession`: Custom error message for unavailable/blocked confessions.&#10;- `error_invalid_action`: Generic error message for unavailable/blocked actions.&#10;- `coming_soon`: String used to mark features that are not yet active.&#10;&#10;Includes translations for: Ukrainian (uk), Russian (ru), German (de), Romanian (ro), and Georgian (ka).">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/4027f6bb-730c-433c-a338-4c69a1e42e5c.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/4027f6bb-730c-433c-a338-4c69a1e42e5c/storage_v2/_src_/schema/main.uQUzAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/ConfessionResource.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/Pages/CreateConfession.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/Pages/EditConfession.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/Pages/ListConfessions.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Statistics/Pages/ListStatistics.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Statistics/StatisticResource.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/countries.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2025_11_03_130813_setup_countries_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2025_11_03_130814_optimize_countries_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/seeders/CountriesSeeder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/8.4/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/8.4/php.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/8.4/start-container" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/8.4/supervisord.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/mariadb/create-testing-database.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/mysql/create-testing-database.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/pgsql/create-testing-database.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/BotCallback.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/ConfessionActions.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/ConfessionSubActions.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/Users/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/Users/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/BotButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BotButton.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Confession.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Confession.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Country.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/nutgram.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/nutgram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/de/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/de/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/en/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/en/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ka/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ka/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ro/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ro/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ru/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ru/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/uk/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/uk/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/filament/filament/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/filament/filament/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/filament/forms/components/checkbox-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/filament/forms/components/checkbox-list.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/filament/forms/components/code-editor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/filament/forms/components/code-editor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/filament/forms/components/date-time-picker.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/filament/forms/components/date-time-picker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/filament/forms/components/file-upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/filament/forms/components/file-upload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/filament/forms/components/rich-editor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/filament/forms/components/rich-editor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +284,7 @@
       <workItem from="1761686887158" duration="4891000" />
       <workItem from="1761726255351" duration="27210000" />
       <workItem from="1762159390759" duration="9549000" />
-      <workItem from="1762181373734" duration="10836000" />
+      <workItem from="1762181373734" duration="13410000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -402,7 +350,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761764531998</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity.">
+      <option name="closed" value="true" />
+      <created>1762193049858</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1762193049858</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -425,6 +381,7 @@
     <MESSAGE value="Add new middlewares and refactor Nutgram Conversations to fix context initialization" />
     <MESSAGE value="Lint fixes" />
     <MESSAGE value="feat(i18n): Add new error and &quot;coming soon&quot; keys with translations&#10;&#10;Adds the following new localization strings to the settings/telegram language files:&#10;- `error_invalid_confession`: Custom error message for unavailable/blocked confessions.&#10;- `error_invalid_action`: Generic error message for unavailable/blocked actions.&#10;- `coming_soon`: String used to mark features that are not yet active.&#10;&#10;Includes translations for: Ukrainian (uk), Russian (ru), German (de), Romanian (ro), and Georgian (ka)." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(i18n): Add new error and &quot;coming soon&quot; keys with translations&#10;&#10;Adds the following new localization strings to the settings/telegram language files:&#10;- `error_invalid_confession`: Custom error message for unavailable/blocked confessions.&#10;- `error_invalid_action`: Generic error message for unavailable/blocked actions.&#10;- `coming_soon`: String used to mark features that are not yet active.&#10;&#10;Includes translations for: Ukrainian (uk), Russian (ru), German (de), Romanian (ro), and Georgian (ka)." />
+    <MESSAGE value="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity." />
   </component>
 </project>
