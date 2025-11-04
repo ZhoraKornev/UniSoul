@@ -101,6 +101,4 @@ class BotButtonResource extends Resource
             'index' => ManageBotButtons::route('/'),
         ];
     }
-
-
 }

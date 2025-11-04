@@ -15,7 +15,6 @@ return new class extends Migration
             $table->json('description');
             $table->string('emoji', 10);
             $table->boolean('active')->default(false);
-            $table->json('available_actions')->nullable();
             $table->timestamps();
         });
 

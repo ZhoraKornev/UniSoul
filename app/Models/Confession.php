@@ -6,6 +6,7 @@ use App\Enums\BotCallback;
 use App\Enums\ConfessionSubActions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Webpatser\Countries\Countries;
@@ -18,7 +19,6 @@ use Webpatser\Countries\Countries;
  * @property string $emoji
  * @property array<array-key, mixed> $country_ids
  * @property bool $active
- * @property array<array-key, mixed>|null $available_actions Доступні дії (послуги) для цієї конфесії, зберігається як масив значень ConfessionSubActions enum.
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read array $available_action_enums
@@ -93,5 +93,14 @@ class Confession extends Model
             ->values()
             ->toArray();
     }
-}
 
+    public function botButtons(): MorphMany
+    {
+        return $this->morphMany(BotButton::class, 'entity');
+    }
+
+    public function branches()
+    {
+        return $this->hasMany(Branch::class);
+    }
+}

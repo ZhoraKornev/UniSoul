@@ -7,14 +7,11 @@ use App\Enums\SettingsKeys;
 use App\Models\BotButton;
 use App\Models\Chat;
 use App\Models\Confession;
-use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class MainMenuConversation extends InlineMenu
+class MainMenuConversation extends BaseConversation
 {
-    public const CONFESSION_PREFIX = 'view_confession';
-
     public function start(Nutgram $bot): void
     {
         $locale = app()->getLocale();
@@ -48,10 +45,11 @@ class MainMenuConversation extends InlineMenu
             $confession = Confession::find($confessionId);
 
             if ($confession) {
+                /** @var Confession $confession */
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
                         text: $confession->emoji . ' ' . $confession->getTranslation('name', $locale),
-                        callback_data: self::CONFESSION_PREFIX . ":{$confession->id}@viewConfession"
+                        callback_data: $this->buildCallbackData(ConfessionConversation::CONFESSION_PREFIX, 'viewConfession', $confession->id)
                     )
                 );
             }
@@ -69,6 +67,7 @@ class MainMenuConversation extends InlineMenu
     public function viewConfession(Nutgram $bot): void
     {
         $bot->answerCallbackQuery();
+        /** @var ConfessionConversation $conversation */
         $conversation = ConfessionConversation::begin($bot);
         $conversation->handleViewConfession($bot);
     }

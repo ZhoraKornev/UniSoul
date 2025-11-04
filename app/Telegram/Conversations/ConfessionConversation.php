@@ -5,12 +5,13 @@ namespace App\Telegram\Conversations;
 use App\Enums\BotCallback;
 use App\Models\BotButton;
 use App\Models\Confession;
-use SergiX44\Nutgram\Conversations\InlineMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 
-class ConfessionConversation extends InlineMenu
+class ConfessionConversation extends BaseConversation
 {
+    public const CONFESSION_PREFIX = 'view_confession';
+
     public function start(Nutgram $bot): void
     {
         $confessions = Confession::query()->where('active', true)->get();
@@ -19,10 +20,15 @@ class ConfessionConversation extends InlineMenu
         $this->menuText(__('telegram.select_confession'));
 
         foreach ($confessions as $confession) {
+            /** @var Confession $confession */
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
-                    callback_data: MainMenuConversation::CONFESSION_PREFIX . ":{$confession->id}@handleViewConfession"
+                    callback_data: $this->buildCallbackData(
+                        self::CONFESSION_PREFIX,
+                        BotCallback::PREFIX_FOR_FUNCTION . BotCallback::ViewConfession->name,
+                        $confession->id
+                    )
                 )
             );
         }
@@ -43,25 +49,38 @@ class ConfessionConversation extends InlineMenu
 
     public function handleViewConfession(Nutgram $bot): void
     {
-        $data = $bot->callbackQuery()?->data ?? '';
-        preg_match('/' . MainMenuConversation::CONFESSION_PREFIX . ':(\d+)/', strtolower($data), $m);
-        $id = $m[1] ?? null;
+        $data = $bot->callbackQuery()->data ?? '';
+        \Log::info('handleViewConfession', ['callback_data' => $data]);
 
+        $parsed = $this->parseCallbackData($data);
+        \Log::info('Parsed callback data', $parsed);
+
+        $id = $parsed['id'];
         $confession = Confession::find($id);
+        \Log::info('Confession lookup', ['id' => $id, 'found' => $confession ? 'yes' : 'no']);
 
         if (!$confession) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
-
             return;
         }
 
+        /** @var Confession $confession */
+        $locale = app()->getLocale();
         $this->clearButtons();
+        // Add timestamp to ensure content is different from previous calls
         $this->menuText(
-            $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()) . "\n\n" .
-            $confession->getTranslation('description', app()->getLocale())
+            $confession->emoji . ' ' . $confession->getTranslation('name', $locale) . "\n\n" .
+            $confession->getTranslation('description', $locale) . "\n\n📅 " . now()->format('H:i:s')
         );
-        $confessionRootButtonId = BotButton::whereCallbackData(BotCallback::ConfessionListMenu->value)->select('id')->first()?->id;
+
+        /** @var BotButton|null $confessionRootButton */
+        $confessionRootButton = BotButton::whereCallbackData(BotCallback::ConfessionListMenu->value)
+            ->select('id')
+            ->first();
+        $confessionRootButtonId = $confessionRootButton?->id;
+        \Log::info('Root button lookup', ['root_button_id' => $confessionRootButtonId]);
+
         if (!$confessionRootButtonId) {
             return;
         }
@@ -73,23 +92,24 @@ class ConfessionConversation extends InlineMenu
             ->where('active', true)
             ->orderBy('order')
             ->get();
+        \Log::info('Buttons found', ['count' => $buttons->count()]);
 
         foreach ($buttons as $button) {
             /** @var BotButton $button */
+            $callbackData = $this->buildCallbackData(
+                $button->callback_data->value,
+                BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name,
+                $confession->id
+            );
+            \Log::info('Adding button', ['text' => $button->getTranslation('text', $locale), 'callback' => $callbackData]);
+
             $this->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: $button->getTranslation('text', app()->getLocale()),
-                    callback_data: $button->callback_data->name . '@' . BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name
+                    text: $button->getTranslation('text', $locale),
+                    callback_data: $callbackData,
                 )
             );
         }
-
-        $this->addButtonRow(
-            InlineKeyboardButton::make(
-                text: __('telegram.main_menu'),
-                callback_data: BotCallback::MainMenu->value . '@handleMainMenu'
-            )
-        );
 
         if ($bot->isCallbackQuery()) {
             $bot->answerCallbackQuery();
@@ -98,72 +118,135 @@ class ConfessionConversation extends InlineMenu
         $this->showMenu();
     }
 
+    //✨ Про конфесію
     public function handleLearnAboutConfession(Nutgram $bot): void
     {
-
-        $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
-        MainMenuConversation::begin($bot);
-
-
-        $this->showMenu();
+        $this->handleConfessionAction($bot, '✨ Про конфесію');
     }
 
     public function handleConfessionMenuAction(Nutgram $bot): void
     {
+        $data = $bot->callbackQuery()->data ?? '';
+        $parsed = $this->parseCallbackData($data);
+        $id = $parsed['id'];
+        $confession = Confession::find($id);
 
-        $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
-        MainMenuConversation::begin($bot);
-
-
-        $this->showMenu();
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        if (!str_starts_with($name, 'handle')) {
-            throw new \RuntimeException("Unknown callback: " . $name);
-        }
-
-        $bot = $arguments[0] ?? null;
-        $raw = $bot->callbackQuery()?->data ?? '';
-
-        preg_match('/([^@]+)@handle([^:]+)(?::(\d+))?/i', $raw, $m);
-
-        $callback = $m[1] ?? null;
-        $method = $m[2] ?? null;
-        $confId = $m[3] ?? null;
-
-        $confession = $confId ? Confession::find($confId) : null;
-
-        $parent = BotButton::where('callback_data', $callback)
-            ->where('entity_type', Confession::class)
-            ->where('entity_id', optional($confession)->id)
-            ->first();
-
-        if (!$parent) {
-            $bot->answerCallbackQuery(text: __('telegram.error_action'), showAlert: true);
-            MainMenuConversation::begin($bot); // Safer redirection
+        if (!$confession) {
+            $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
+            MainMenuConversation::begin($bot);
             return;
         }
 
-        $children = BotButton::where('parent_id', $parent->id)->orderBy('order')->get();
+        /** @var Confession $confession */
+        $locale = app()->getLocale();
+        /** @var BotButton|null $parent */
+        $parent = BotButton::whereCallbackData($parsed['action'])
+            ->where('entity_type', Confession::class)
+            ->where('entity_id', $confession->id)
+            ->where('active', true)
+            ->first();
+
+        if (!$parent) {
+            $bot->answerCallbackQuery(text: __('telegram.error_action'), show_alert: true);
+            MainMenuConversation::begin($bot);
+            return;
+        }
+
+        /** @var BotButton $parent */
+        $childrenButtons = BotButton::where('parent_id', $parent->id)->orderBy('order')->get();
+        \Log::info('Children buttons', ['count' => $childrenButtons->count()]);
 
         $this->clearButtons();
-        $this->menuText($parent->getTranslation('text', app()->getLocale()));
+        $this->menuText($parent->getTranslation('text', $locale));
 
-        foreach ($children as $btn) {
+        foreach ($childrenButtons as $btn) {
+            /** @var BotButton $btn */
             $this->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: $btn->getTranslation('text', app()->getLocale()),
-                    callback_data: $btn->callback_data . '@handle' . ucfirst($btn->callback_data) . ':' . $confession->id
+                    text: $btn->getTranslation('text', $locale),
+                    callback_data: $this->buildCallbackData(
+                        $btn->callback_data->value,
+                        BotCallback::PREFIX_FOR_FUNCTION . $btn->callback_data->name,
+                        $confession->id
+                    )
                 )
             );
         }
 
+
+        if ($bot->isCallbackQuery()) {
+            $bot->answerCallbackQuery();
+        }
+
+        $this->showMenu();
+    }
+
+    public function handleSorokoust(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'sorokoust');
+    }
+
+    public function handleLightACandle(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'light_a_candle');
+    }
+
+    public function handleSubmitPrayerNote(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'submit_prayer_note');
+    }
+
+    public function handleReadAkathists(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'read_akathists');
+    }
+
+    public function handleShowBranches(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'show_branches');
+    }
+
+    public function handleReadUnceasingPsalter(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'read_unceasing_psalter');
+    }
+
+    public function handleMemorialService(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'memorial_service');
+    }
+
+    public function handlePriestsList(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'priests_list');
+    }
+
+    public function handleDonate(Nutgram $bot): void
+    {
+        $this->handleConfessionAction($bot, 'donate');
+    }
+
+    private function handleConfessionAction(Nutgram $bot, string $action): void
+    {
+        $data = $bot->callbackQuery()->data ?? '';
+        $parsed = $this->parseCallbackData($data);
+        $id = $parsed['id'];
+        $confession = Confession::find($id);
+
+        if (!$confession) {
+            $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
+            MainMenuConversation::begin($bot);
+            return;
+        }
+
+        /** @var Confession $confession */
+        $this->clearButtons();
+        $this->menuText(__('telegram.confession_actions.' . $action) . ' - ' . __('telegram.coming_soon'));
+
         $this->addButtonRow(
             InlineKeyboardButton::make(
                 text: __('telegram.button_back'),
-                callback_data: BotCallback::ViewConfession->value . ":{$confession->id}@handleViewConfession"
+                callback_data: $this->buildCallbackData('view_confession', 'handleViewConfession', $confession->id)
             )
         );
 
@@ -174,44 +257,13 @@ class ConfessionConversation extends InlineMenu
         $this->showMenu();
     }
 
-    public function handleAction(Nutgram $bot): void
-    {
-        // Refactored nullsafe access (L135 error resolved)
-        $callbackQuery = $bot->callbackQuery();
-        $callbackData = $callbackQuery ? $callbackQuery->data : '';
-        preg_match('/action:([^:]+):(\d+)/', $callbackData, $matches);
-        $action = $matches[1] ?? null;
-        $id = $matches[2] ?? null;
-
-        if (!$action || !$id) {
-            $bot->answerCallbackQuery(text: __('telegram.error_invalid_action'));
-            $this->start($bot);
-            return;
-        }
-
-        /** @var Confession|null $confession */
-        $confession = Confession::find($id);
-
-        if (!$confession) {
-            $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'));
-            $this->start($bot);
-            return;
-        }
-
-        $this->clearButtons();
-        $this->menuText(__('telegram.' . $action) . ' - ' . __('telegram.coming_soon'));
-
-        $this->addButtonRow(
-            InlineKeyboardButton::make(
-                text: __('telegram.button_back'),
-                callback_data: 'confession:' . $id . '@showConfession'
-            )
-        );
-
-        $this->showMenu();
-    }
     public function handleMainMenu(Nutgram $bot): void
     {
         MainMenuConversation::begin($bot);
+    }
+
+    public function handleBackButton(Nutgram $bot): void
+    {
+        $this->start($bot);
     }
 }

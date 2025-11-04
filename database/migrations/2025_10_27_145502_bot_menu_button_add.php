@@ -23,6 +23,7 @@ return new class extends Migration
 
             $table->unsignedInteger('order')->default(0);
             $table->boolean('active')->default(true);
+            $table->boolean('need_donations')->default(false);
 
             $table->timestamps();
 

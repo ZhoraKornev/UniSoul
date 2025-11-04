@@ -115,3 +115,13 @@ function sendExceptionViaTelegram(Throwable $e): void
         chat_id: config('owner.id'),
     );
 }
+
+if (!function_exists('cb')) {
+    function cb(string $action, $id = null): string
+    {
+        return json_encode([
+            'action' => $action,
+            'id'     => $id,
+        ]);
+    }
+}

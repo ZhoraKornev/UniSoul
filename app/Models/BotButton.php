@@ -58,12 +58,15 @@ class BotButton extends Model
         'order',
         'entity_type',
         'entity_id',
+        'need_donations',
     ];
 
     protected $casts = [
         'parent_id' => 'integer',
         'order' => 'integer',
-        'callback_data' => BotCallback::class, // ✅ ENUM CASTING
+        'callback_data' => BotCallback::class,
+        'text' => 'array',
+        'need_donations' => 'boolean',
     ];
 
     // Polymorphic binding
@@ -74,8 +77,7 @@ class BotButton extends Model
 
     public function children(): HasMany
     {
-        $relation = $this->hasMany(self::class, 'parent_id');
-        return $relation->orderBy('order');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parent(): BelongsTo
@@ -102,6 +104,6 @@ class BotButton extends Model
         }
 
         // Otherwise return enum label
-        return $this->callbackEnum()?->label() ?? '';
+        return $this->callbackEnum()->label();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BotCallback;
 use App\Telegram\Commands\HelpCommand;
 use App\Telegram\Commands\SettingsCommand;
 use App\Telegram\Commands\StartCommand;
@@ -26,7 +27,7 @@ $bot->onMessage(function (Nutgram $bot) {
 });
 
 // Main menu navigation
-$bot->onCallbackQueryData('main_menu@backToMain', function (Nutgram $bot) {
+$bot->onCallbackQueryData(BotCallback::MainMenu->value . '@backToMain', function (Nutgram $bot) {
     MainMenuConversation::begin($bot);
 });
 
