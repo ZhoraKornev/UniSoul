@@ -49,7 +49,12 @@ class MainMenuConversation extends BaseConversation
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
                         text: $confession->emoji . ' ' . $confession->getTranslation('name', $locale),
-                        callback_data: $this->buildCallbackData(ConfessionConversation::CONFESSION_PREFIX, 'viewConfession', $confession->id)
+                        callback_data: $this->buildCallbackData(
+                            ConfessionConversation::CONFESSION_PREFIX,
+                            $confession->id,
+                            'viewConfession',
+                            'viewConfession'
+                        )
                     )
                 );
             }

@@ -4,30 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity.">
-      <change afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/RelationManagers/BotButtonsRelationManager.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Branch.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Telegram/Conversations/BaseConversation.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2025_11_04_000000_create_branches_table.php" afterDir="false" />
+    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="refactor(bot): organize BotCallback enum into logical sections with comments&#10;&#10;- Grouped enum cases by domain (navigation, confession flow, actions)&#10;- Added descriptive section headers above enum values&#10;- Improved readability and structure without changing behavior">
+      <change afterPath="$PROJECT_DIR$/app/Models/Employee.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Telegram/DTOs/CallbackData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2025_11_05_114338_create_employees_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/seeders/BotButtonForBranchSeeder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/seeders/BotButtonForEmployersSeeder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/seeders/BranchSeeder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/seeders/EmployeeSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/354ac40b-36d3-44a6-bed1-bf1f8714d504.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Enums/BotCallback.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/Confessions/ConfessionResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/ConfessionResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/Utils.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/Utils.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/BotButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BotButton.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Branch.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Branch.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Chat.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Chat.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Confession.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Confession.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Statistic.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Statistic.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/BaseConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/BaseConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_180242_add_confessions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/de/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/de/telegram.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionBotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonForConfessionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lang/en/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/en/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ka/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ka/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ro/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ro/telegram.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lang/uk/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/uk/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/telegram.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,29 +235,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/projects/tg_bot/lang/de&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;php.override.implement.member.chooser.php.doc&quot;: &quot;NONE&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/projects/tg_bot",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "php.override.implement.member.chooser.php.doc": "NONE",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lang/de" />
@@ -305,7 +305,8 @@
       <workItem from="1761726255351" duration="27210000" />
       <workItem from="1762159390759" duration="9549000" />
       <workItem from="1762181373734" duration="13410000" />
-      <workItem from="1762237214536" duration="21281000" />
+      <workItem from="1762237214536" duration="21517000" />
+      <workItem from="1762333578055" duration="16679000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -379,7 +380,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762193049858</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="refactor(bot): organize BotCallback enum into logical sections with comments&#10;&#10;- Grouped enum cases by domain (navigation, confession flow, actions)&#10;- Added descriptive section headers above enum values&#10;- Improved readability and structure without changing behavior">
+      <option name="closed" value="true" />
+      <created>1762269531017</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762269531017</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -403,14 +412,15 @@
     <MESSAGE value="Lint fixes" />
     <MESSAGE value="feat(i18n): Add new error and &quot;coming soon&quot; keys with translations&#10;&#10;Adds the following new localization strings to the settings/telegram language files:&#10;- `error_invalid_confession`: Custom error message for unavailable/blocked confessions.&#10;- `error_invalid_action`: Generic error message for unavailable/blocked actions.&#10;- `coming_soon`: String used to mark features that are not yet active.&#10;&#10;Includes translations for: Ukrainian (uk), Russian (ru), German (de), Romanian (ro), and Georgian (ka)." />
     <MESSAGE value="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add multi-language support for Bot Buttons &amp; Confessions&#10;&#10;Converted bot buttons text to translatable JSON structure&#10;&#10;Updated BotButtonSeeder and ConfessionBotButtonSeeder to seed labels for all config('app.supported_languages') locales&#10;&#10;Removed hard-coded text values and replaced with enum-based translation generator&#10;&#10;Enforced callback_data as required (removed nullable and comments)&#10;&#10;Updated Confession model to dynamically load available actions from BotButtons enum&#10;&#10;Added translation tabs in Filament form for all supported languages&#10;&#10;Refactored seeders to use reusable translation helper&#10;&#10;Ensured consistent enum-driven structure across button system&#10;&#10;Result: Full multilingual Telegram bot buttons system, dynamic Confession actions loading, and improved database integrity." />
+    <MESSAGE value="refactor(bot): organize BotCallback enum into logical sections with comments&#10;&#10;- Grouped enum cases by domain (navigation, confession flow, actions)&#10;- Added descriptive section headers above enum values&#10;- Improved readability and structure without changing behavior" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(bot): organize BotCallback enum into logical sections with comments&#10;&#10;- Grouped enum cases by domain (navigation, confession flow, actions)&#10;- Added descriptive section headers above enum values&#10;- Improved readability and structure without changing behavior" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Confession.php</url>
-          <line>45</line>
+          <line>48</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

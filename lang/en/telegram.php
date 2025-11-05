@@ -18,6 +18,11 @@ return [
     'close' => '❌ Close',
     'error_invalid_confession' => '⚠️ Confession is unavailable (being updated or blocked).',
     'error_invalid_action' => '⚠️ Action is unavailable (being updated or blocked).',
+    'no_priests_available' => '❌ No priests are currently available.',
+    'no_branches_found' => '❌ No branches found for this confession.',
+    'branches_for_confession' => '🏢 Branches for :confession',
+    'donation_required' => 'This service requires a donation',
+    'error_not_found' => '❌ Error: Item not found',
 
     'gender' => [
         'male' => '👨 Male (men)',
@@ -35,6 +40,11 @@ return [
         'priests_list' => '👥 Our Priests',
         'donate' => '❤️ Donate to Church',
         'show_branches' => '🏢 Show Branches',
+        'contact_employer' => '📞 Contact Employee',
+        'employer_open_menu' => '👤 Employee Menu',
+        'learn_videos_confession' => '🎥 Learn Videos about Confession',
+        'learn_important_notation_about_confession' => '📋 Important Notes about Confession',
+        'learn_books_about_confession' => '📚 Books about Confession',
     ],
 
     'bot_callbacks' => [

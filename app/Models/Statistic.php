@@ -91,7 +91,7 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Statistic whereId($value)
  * @method static Builder<static>|Statistic whereValue($value)
  * @method static Builder<static>|Statistic yearToDate(?string $column = null)
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin Eloquent
  */
 class Statistic extends Model
 {

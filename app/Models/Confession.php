@@ -17,18 +17,21 @@ use Webpatser\Countries\Countries;
  * @property array<array-key, mixed> $full_name
  * @property array<array-key, mixed> $description
  * @property string $emoji
- * @property array<array-key, mixed> $country_ids
  * @property bool $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BotButton> $botButtons
+ * @property-read int|null $bot_buttons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Branch> $branches
+ * @property-read int|null $branches_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Countries> $countries
+ * @property-read int|null $countries_count
  * @property-read array $available_action_enums
  * @property-read mixed $translations
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereAvailableActions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereCountryIds($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereEmoji($value)
@@ -40,7 +43,7 @@ use Webpatser\Countries\Countries;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocales(string $column, array $locales)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereUpdatedAt($value)
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin \Eloquent
  */
 
 class Confession extends Model

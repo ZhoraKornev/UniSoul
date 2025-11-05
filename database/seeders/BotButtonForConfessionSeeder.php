@@ -5,10 +5,9 @@ namespace Database\Seeders;
 use App\Models\Confession;
 use App\Models\BotButton;
 use App\Enums\BotCallback;
-use Faker\Generator;
 use Illuminate\Database\Seeder;
 
-class ConfessionBotButtonSeeder extends Seeder
+class BotButtonForConfessionSeeder extends Seeder
 {
     public function run(): void
     {
@@ -37,7 +36,7 @@ class ConfessionBotButtonSeeder extends Seeder
 
         // LEVEL 1
 
-        BotButton::create([
+        $learnMenuButton = BotButton::create([
             'parent_id' => $confessionRootButtonId,
             'entity_type' => Confession::class,
             'entity_id' => $confessionId,
@@ -45,6 +44,26 @@ class ConfessionBotButtonSeeder extends Seeder
             'callback_data' => BotCallback::LearnAboutConfession->value,
             'order' => 1,
         ]);
+
+        // LEVEL 2
+
+        $actions = [
+            BotCallback::LearnImportantNotationAboutConfession,
+            BotCallback::LearnBooksAboutConfession,
+            BotCallback::LearnVideosConfession,
+        ];
+
+        foreach ($actions as $index => $action) {
+            BotButton::create([
+                'parent_id' => $learnMenuButton->id,
+                'entity_type' => Confession::class,
+                'entity_id' => $confessionId,
+                'text' => $this->trans($action),
+                'callback_data' => $action->value,
+                'order' => $index + 1,
+                'need_donations' => fake()->boolean()
+            ]);
+        }
 
         BotButton::create([
             'parent_id' => $confessionRootButtonId,
@@ -65,19 +84,11 @@ class ConfessionBotButtonSeeder extends Seeder
         ]);
 
 
-
         // LEVEL 2
 
         $actions = [
-            BotCallback::Sorokoust,
-            BotCallback::LightACandle,
-            BotCallback::SubmitPrayerNote,
-            BotCallback::ReadAkathists,
-            BotCallback::ReadUnceasingPsalter,
-            BotCallback::MemorialService,
             BotCallback::Donate,
             BotCallback::PriestsList,
-            BotCallback::BackButton,
             BotCallback::ShowBranches,
         ];
 
@@ -95,13 +106,31 @@ class ConfessionBotButtonSeeder extends Seeder
 
         // Back to Main menu
         BotButton::create([
-            'parent_id' => $confessionRootButtonId,
+            'parent_id' => $confessionId,
             'entity_type' => Confession::class,
             'entity_id' => $confessionId,
-            'text' => $this->trans(BotCallback::BackButton,            ),
+            'text' => $this->trans(BotCallback::BackButton),
             'callback_data' => BotCallback::BackButton->value,
             'order' => 998,
         ]);
+        BotButton::create([
+            'parent_id' => $confessionId,
+            'entity_type' => Confession::class,
+            'entity_id' => $confessionId,
+            'text' => $this->trans(BotCallback::MainMenu),
+            'callback_data' => BotCallback::MainMenu->value,
+            'order' => 998,
+        ]);
+
+        BotButton::create([
+            'parent_id' => $menu->id,
+            'entity_type' => Confession::class,
+            'entity_id' => $confessionId,
+            'text' => $this->trans(BotCallback::BackButton),
+            'callback_data' => BotCallback::BackButton->value,
+            'order' => 998,
+        ]);
+
         BotButton::create([
             'parent_id' => $menu->id,
             'entity_type' => Confession::class,

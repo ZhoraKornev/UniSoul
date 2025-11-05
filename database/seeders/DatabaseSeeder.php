@@ -16,7 +16,11 @@ class DatabaseSeeder extends Seeder
             ConfessionSeeder::class,
             UserSeeder::class,
             BotButtonSeeder::class,
-            ConfessionBotButtonSeeder::class,
+            BranchSeeder::class,
+            EmployeeSeeder::class,
+            BotButtonForConfessionSeeder::class,
+            BotButtonForEmployersSeeder::class,
+            BotButtonForBranchSeeder::class,
         ]);
     }
 }

@@ -80,7 +80,6 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Chat ofLastWeeks(int $weeks, $startFrom = null, ?\LaracraftTech\LaravelDateScopes\DateRange $customRange = null, ?string $column = null)
  * @method static Builder<static>|Chat ofLastYear($startFrom = null, ?string $column = null)
  * @method static Builder<static>|Chat ofLastYears(int $years, $startFrom = null, ?\LaracraftTech\LaravelDateScopes\DateRange $customRange = null, ?string $column = null)
- * @method static Builder<static>|Chat ofThisYear()
  * @method static Builder<static>|Chat ofToday($startFrom = null, ?string $column = null)
  * @method static Builder<static>|Chat ofYesterday($startFrom = null, ?string $column = null)
  * @method static Builder<static>|Chat quarterToDate(?string $column = null)
@@ -99,8 +98,7 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Chat whereUpdatedAt($value)
  * @method static Builder<static>|Chat whereUsername($value)
  * @method static Builder<static>|Chat yearToDate(?string $column = null)
- * @method static \Illuminate\Database\Eloquent\Model|static updateOrCreate(array $attributes, array $values = [])
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin \Eloquent
  */
 class Chat extends Model
 {

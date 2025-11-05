@@ -46,7 +46,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTelegramUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin \Eloquent
  */
 class User extends Authenticatable
 {
