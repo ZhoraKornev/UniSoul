@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\State;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * @property int $id
+ * @property int $branch_id
+ * @property int $user_id
+ * @property int $manager_id
+ * @property int $user_chat_id
+ * @property int $manager_chat_id
+ * @property State $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Employee $manager
+ * @property-read \App\Models\SupportManager $supportManagerProfile
+ * @method static Builder<static>|SupportSession active()
+ * @method static Builder<static>|SupportSession newModelQuery()
+ * @method static Builder<static>|SupportSession newQuery()
+ * @method static Builder<static>|SupportSession query()
+ * @method static Builder<static>|SupportSession whereBranchId($value)
+ * @method static Builder<static>|SupportSession whereCreatedAt($value)
+ * @method static Builder<static>|SupportSession whereId($value)
+ * @method static Builder<static>|SupportSession whereManagerChatId($value)
+ * @method static Builder<static>|SupportSession whereManagerId($value)
+ * @method static Builder<static>|SupportSession whereStatus($value)
+ * @method static Builder<static>|SupportSession whereUpdatedAt($value)
+ * @method static Builder<static>|SupportSession whereUserChatId($value)
+ * @method static Builder<static>|SupportSession whereUserId($value)
+ * @mixin \Eloquent
+ */
+class SupportSession extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'branch_id',
+        'user_id',
+        'manager_id',
+        'user_chat_id',
+        'manager_chat_id',
+        'status',
+        'mode',
+        'ai_thread_id',
+        'ai_handoff_at',
+    ];
+
+    protected $casts = [
+        'ai_handoff_at' => 'datetime',
+        'manager_id' => 'integer',
+        // MODIFIED: Cast status to the integer-backed State Enum
+        'status' => State::class,
+    ];
+
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'manager_id');
+    }
+
+    public function supportManagerProfile(): BelongsTo
+    {
+        return $this->belongsTo(SupportManager::class, 'manager_id', 'employee_id');
+    }
+
+    /**
+     * Scope a query to include only sessions in an active state (Ready or ActiveConversation).
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        // An active session is one where the status is State::Ready (10) or State::ActiveConversation (11),
+        // which corresponds to the 1x group in the Enum.
+        return $query->whereIn('status', [State::Ready->value, State::ActiveConversation->value]);
+    }
+}

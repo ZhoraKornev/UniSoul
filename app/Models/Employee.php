@@ -16,6 +16,7 @@ use Spatie\Translatable\HasTranslations;
  * @property string $sex
  * @property int $age
  * @property bool $is_available
+ * @property bool $active
  * @property string|null $phone
  * @property string|null $telegram_nickname
  * @property array<array-key, mixed> $address
@@ -29,6 +30,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereAge($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereBranchId($value)

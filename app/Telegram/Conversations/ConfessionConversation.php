@@ -9,6 +9,7 @@ use App\Models\Confession;
 use App\Models\Employee;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 class ConfessionConversation extends BaseConversation
 {
@@ -283,6 +284,7 @@ class ConfessionConversation extends BaseConversation
             $this->menuText(__('telegram.branches_for_confession', ['confession' => $confession->getTranslation('name', $locale)]));
 
             foreach ($branches as $branch) {
+                /** @var Branch $branch */
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
                         text: "📍 " . $branch->getTranslation('name', $locale),
@@ -347,6 +349,7 @@ class ConfessionConversation extends BaseConversation
             ->get();
 
         foreach ($buttons as $button) {
+            /** @var BotButton $button */
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $button->getTranslation('text', $locale),
@@ -517,6 +520,7 @@ class ConfessionConversation extends BaseConversation
 
     public function handleDonate(Nutgram $bot): void
     {
+        // Оновлено: Перенаправлення на загальну дію пожертви
         $this->handleConfessionAction($bot, 'donate');
     }
 
@@ -535,6 +539,10 @@ class ConfessionConversation extends BaseConversation
         $this->handleConfessionAction($bot, 'learn_books_about_confession');
     }
 
+    /**
+     * Оновлена функція, яка перевіряє необхідність пожертви
+     * або починає розмову про підтримку.
+     */
     public function handleContactEmployer(Nutgram $bot): void
     {
         $data = $bot->callbackQuery()->data ?? '';
@@ -554,40 +562,56 @@ class ConfessionConversation extends BaseConversation
             ->first();
 
         $this->clearButtons();
-        $locale = app()->getLocale();
 
-        $text = "📞 " . __('telegram.confession_actions.contact_employer') . "\n\n";
-        $text .= "👤 " . $employee->getTranslation('name', $locale) . "\n";
-        $text .= "📋 " . $employee->getTranslation('position', $locale) . "\n";
-
+        // 1. ПЕРЕВІРКА: Чи потрібна пожертва
         if ($button && $button->need_donations) {
-            $text .= "\n💰 " . __('telegram.donation_required') . "\n";
-        }
 
-        if ($employee->phone) {
-            $text .= "\n📞 " . $employee->phone;
-        }
+            if ($bot->isCallbackQuery()) {
+                $bot->answerCallbackQuery();
+            }
 
-        $this->menuText($text);
-
-        $this->addButtonRow(
-            InlineKeyboardButton::make(
-                text: __('telegram.button_back'),
-                callback_data: $this->buildCallbackData(
-                    'employer_menu',
-                    $confession->id,
-                    'EmployerOpenMenu',
-                    'handleEmployerOpenMenu',
-                    $employee->id
+            // Перенаправляємо на дію пожертви
+            $bot->sendMessage(
+                text: __('telegram.donation_required_message'),
+                reply_markup: InlineKeyboardMarkup::make()->addRow(
+                    InlineKeyboardButton::make(
+                        text: __('telegram.button_donate'),
+                        callback_data: $this->buildCallbackData(
+                            BotCallback::Donate->value,
+                            $confession->id,
+                            BotCallback::Donate->name,
+                            'handleDonate'
+                        )
+                    )
                 )
-            )
-        );
+            );
 
+            // Показуємо меню назад для повернення
+            $this->menuText(__('telegram.select_action'));
+            $this->addButtonRow(
+                InlineKeyboardButton::make(
+                    text: __('telegram.button_back'),
+                    callback_data: $this->buildCallbackData(
+                        'employer_menu',
+                        $confession->id,
+                        'EmployerOpenMenu',
+                        'handleEmployerOpenMenu',
+                        $employee->id
+                    )
+                )
+            );
+            $this->showMenu();
+
+            return;
+        }
+
+        // 2. ДІЯ: Якщо пожертва не потрібна, починаємо розмову підтримки.
         if ($bot->isCallbackQuery()) {
             $bot->answerCallbackQuery();
         }
 
-        $this->showMenu();
+        /** @var SupportConversation $supportConversation */
+        SupportConversation::beginWithParams($bot, $employee->branch_id, $employee->id);
     }
 
     private function handleConfessionAction(Nutgram $bot, string $action): void
