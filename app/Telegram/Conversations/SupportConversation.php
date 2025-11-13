@@ -151,36 +151,36 @@ class SupportConversation extends BaseConversation
      */
     protected function initAISupport(Nutgram $bot): ?string
     {
-        try {
-            // Використання app() для отримання сервісу
-            $aiService = app(GeminiAIService::class);
-            $threadId = $aiService->startThread($bot->userId()); // Створюємо новий потік для ШІ
+        //        try {
+        // Використання app() для отримання сервісу
+        $aiService = app(GeminiAIService::class);
+        $threadId = $aiService->startThread($bot->userId()); // Створюємо новий потік для ШІ
 
-            $session = SupportSession::create([
-                'branch_id' => $this->branchId,
-                'user_id' => $bot->userId(),
-                'manager_id' => null, // Немає менеджера-людини
-                'user_chat_id' => $bot->chatId(),
-                'manager_chat_id' => null, // Немає чату менеджера
-                'status' => 'ACTIVE',
-                'mode' => 'AI', // Режим ШІ
-                'ai_thread_id' => $threadId,
-                'ai_handoff_at' => now(),
-            ]);
+        $session = SupportSession::create([
+            'branch_id' => $this->branchId,
+            'user_id' => $bot->userId(),
+            'manager_id' => null, // Немає менеджера-людини
+            'user_chat_id' => $bot->chatId(),
+            'manager_chat_id' => null, // Немає чату менеджера
+            'status' => 'ACTIVE',
+            'mode' => 'AI', // Режим ШІ
+            'ai_thread_id' => $threadId,
+            'ai_handoff_at' => now(),
+        ]);
 
-            $bot->sendMessage(__('telegram.support.ai_mode_active'));
+        $bot->sendMessage(__('telegram.support.ai_mode_active'));
 
-            // Переходимо до кроку обробки ШІ
-            $this->next('routeAIMessage');
+        // Переходимо до кроку обробки ШІ
+        $this->next('routeAIMessage');
 
-            return null;
-        } catch (Throwable $e) {
-            $bot->sendMessage(__('telegram.support.error_general_ai'));
-            Log::error('AI Support Init Error: '.$e->getMessage());
-            $this->end();
-
-            return null;
-        }
+        return null;
+        //        } catch (Throwable $e) {
+        //            $bot->sendMessage(__('telegram.support.error_general_ai'));
+        //            Log::error('AI Support Init Error: '.$e->getMessage());
+        //            $this->end();
+        //
+        //            return null;
+        //        }
     }
 
     /**

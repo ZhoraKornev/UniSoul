@@ -12,16 +12,24 @@ use Spatie\Translatable\HasTranslations;
 
 /**
  * @property int $id
- * @property bool $need_donations
+ * @property int|null $parent_id
+ * @property array $text
  * @property BotCallback $callback_data
+ * @property int $order
+ * @property string|null $entity_type
+ * @property int|null $entity_id
+ * @property bool $need_donations
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BotButton> $children
  * @property-read int|null $children_count
- * @property-read Model|\Eloquent $entity
  * @property-read BotButton|null $parent
  * @property-read mixed $translations
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton where(\Closure|string|array|\Illuminate\Database\Query\Expression $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereCallbackData(mixed $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereParentId(mixed $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereEntityType(mixed $value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereNull(\Closure|string|array|\Illuminate\Database\Query\Expression $columns, string $boolean = 'and', bool $not = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton newQuery()
@@ -31,7 +39,7 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereLocale(string $column, string $locale)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BotButton whereLocales(string $column, array $locales)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class BotButton extends Model
 {
@@ -58,7 +66,7 @@ class BotButton extends Model
         'need_donations' => 'boolean',
     ];
 
-    // Polymorphic binding
+    // 🔗 Relationships
     public function entity(): MorphTo
     {
         return $this->morphTo();
@@ -74,25 +82,18 @@ class BotButton extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    /**
-     * Get enum object from callback_data
-     */
+    // ⚙️ Helpers
     public function callbackEnum(): BotCallback
     {
         return $this->callback_data;
     }
 
-    /**
-     * Resolve translated label dynamically
-     */
     public function label(): string
     {
-        // If text translation exists, use it
         if (! empty($this->text)) {
             return $this->getTranslation('text', app()->getLocale());
         }
 
-        // Otherwise return enum label
         return $this->callbackEnum()->label();
     }
 }

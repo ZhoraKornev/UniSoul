@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use SergiX49\Nutgram\Nutgram;
+use SergiX44\Nutgram\Nutgram;
 use Symfony\Component\Console\Command\Command as CommandCLI;
 use Throwable;
 

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,7 +78,7 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Statistic weekToDate(?string $column = null)
  * @method static Builder<static>|Statistic yearToDate(?string $column = null)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Statistic extends Model
 {

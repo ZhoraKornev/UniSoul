@@ -12,27 +12,32 @@ use Webpatser\Countries\Countries;
 
 /**
  * @property int $id
- * @property string $emoji
+ * @property array $name
+ * @property array|null $full_name
+ * @property array|null $description
+ * @property string|null $emoji
+ * @property bool $active
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BotButton> $botButtons
  * @property-read int|null $bot_buttons_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Branch> $branches
  * @property-read int|null $branches_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Countries> $countries
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Webpatser\Countries\Countries> $countries
  * @property-read int|null $countries_count
  * @property-read array $available_action_enums
  * @property-read mixed $translations
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession where(\Closure|string|array|\Illuminate\Database\Query\Expression $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereId(mixed $value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocale(string $column, string $locale)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocales(string $column, array $locales)
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereId(mixed $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereEmoji(mixed $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereActive(mixed $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereLocale(string $column, string $locale)
+ * @method static \Illuminate\Database\Eloquent\Builder|Confession whereLocales(string $column, array $locales)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Confession extends Model
 {

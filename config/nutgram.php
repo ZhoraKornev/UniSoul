@@ -1,5 +1,7 @@
 <?php
 
+use App\Telegram\Handlers\BackNavigationHandler;
+
 return [
     // The Telegram BOT api token
     'token' => env('TELEGRAM_TOKEN'),
@@ -24,6 +26,6 @@ return [
     'log_channel' => env('TELEGRAM_LOG_CHANNEL', 'null'),
 
     'handlers' => [
-        \App\Telegram\Handlers\BackNavigationHandler::class,
+        BackNavigationHandler::class,
     ],
 ];

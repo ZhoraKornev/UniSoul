@@ -20,8 +20,12 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereLocale(string $column, string $locale)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereLocales(string $column, array $locales)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereConfessionId(mixed $column)
+ * @method string getTranslation(string $key, string $locale, bool $useFallbackLocale = true)
+ * @method self setTranslation(string $key, string $locale, string $value)
+ * @method array getTranslations(string $key)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Branch extends Model
 {

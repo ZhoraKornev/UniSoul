@@ -11,12 +11,13 @@ class CallbackData
         public readonly ?string $action = null,
         public readonly ?int $actionId = null,
         public readonly ?int $confessionId = null,
-        public readonly ?string $method = null
+        public readonly ?string $method = null,
+        public readonly ?int $page = null, // ✅ new optional page
     ) {}
 
     public static function parse(string $data): self
     {
-        // Format: confession:confession_id:action:action_id@method
+        // Format: confession:confession_id:action:action_id:page@method
         $method = null;
         $callbackPart = $data;
         if (str_contains($data, '@')) {
@@ -32,7 +33,8 @@ class CallbackData
             action: $parts[2] ?? null,
             actionId: isset($parts[3]) ? (int) $parts[3] : null,
             confessionId: isset($parts[1]) ? (int) $parts[1] : null,
-            method: $method
+            method: $method,
+            page: isset($parts[4]) ? (int) $parts[4] : 1,
         );
     }
 
@@ -43,7 +45,8 @@ class CallbackData
             $this->confessionId,
             $this->action,
             $this->actionId,
-        ], fn ($value) => $value !== null);
+            $this->page,
+        ], fn ($v) => $v !== null);
 
         $result = implode(':', $parts);
 

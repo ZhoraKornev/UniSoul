@@ -79,7 +79,7 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Chat whereSettings(string $setting, string $operator, $value, ?bool $filterOnMissing = null)
  * @method static Builder<static>|Chat yearToDate(?string $column = null)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Chat extends Model
 {

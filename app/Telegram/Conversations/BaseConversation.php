@@ -17,8 +17,16 @@ abstract class BaseConversation extends InlineMenu
         ?int $confessionId,
         string $action,
         string $method,
-        ?int $actionId = null
+        ?int $actionId = null,
+        ?int $page = null,
     ): string {
-        return (new CallbackData($confession, $action, $actionId, $confessionId, $method))->build();
+        return (new CallbackData(
+            confession: $confession,
+            action: $action,
+            actionId: $actionId,
+            confessionId: $confessionId,
+            method: $method,
+            page: $page,
+        ))->build();
     }
 }

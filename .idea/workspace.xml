@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="✨ feat: Setup GitHub Actions workflow for PHP linting&#10;&#10;Introduces the initial CI/CD workflow (`.github/workflows/lint.yml`) to automatically enforce code quality and style standards on push and pull requests to the `main` and `develop` branches.&#10;&#10;The workflow includes the following tools:&#10;&#10;- 🧹 **PHP CS Fixer:** Automated code style fixing.&#10;- 🔬 **PHPStan:** Static analysis for bug detection and type validation.&#10;- 🎨 **Pint:** Laravel code style checking.">
+    <list default="true" id="9ffce8e0-82c7-48f7-b876-3fe216f734a7" name="Changes" comment="🐛 fix(phpstan): Add explicit type hint to resolve undefined property warning 🛡️&#10;&#10;Resolved a PHPStan warning (`Access to an undefined property App\Models\BotButton::$id`) in `BotButtonsRelationManager.php`.&#10;&#10;The issue was fixed by adding an explicit type hint (`\App\Models\BotButton`) to the `$button` argument within the `mapWithKeys` closure, allowing static analysis to correctly infer the model's properties.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Console/Commands/TelegramSetWebhook.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/TelegramSetWebhook.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/BotCallback.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/BotCallback.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/BotButtons/BotButtonResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/Confessions/ConfessionResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/ConfessionResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Filament/Resources/Confessions/RelationManagers/BotButtonsRelationManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Filament/Resources/Confessions/RelationManagers/BotButtonsRelationManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/Utils.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/Utils.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BotController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BotController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/BotButton.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BotButton.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Branch.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Branch.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Chat.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Chat.php" afterDir="false" />
@@ -23,46 +17,11 @@
       <change beforePath="$PROJECT_DIR$/app/Models/SupportManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SupportManager.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/SupportSession.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SupportSession.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/GeminiAIService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/GeminiAIService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/HandlerProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/HandlerProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Commands/FeedbackCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Commands/FeedbackCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Commands/SettingsCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Commands/SettingsCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/BaseConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/BaseConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/ConfessionConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/DonateConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/DonateConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/FeedbackConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/FeedbackConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/MainMenuConversation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/SettingsConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/Conversations/SupportConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Conversations/SupportConversation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Telegram/DTOs/CallbackData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/DTOs/CallbackData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Handlers/BackNavigationHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Handlers/BackNavigationHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Telegram/Middleware/CollectChatData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Telegram/Middleware/CollectChatData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/countries.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/countries.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/owner.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/owner.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_27_145502_bot_menu_button_add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_29_140940_create_chat_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_140940_create_chat_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_29_141826_create_model_settings_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_141826_create_model_settings_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_10_29_232910_create_statistics_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_10_29_232910_create_statistics_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_11_03_130813_setup_countries_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_11_03_130813_setup_countries_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_11_03_130814_optimize_countries_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_11_03_130814_optimize_countries_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_11_04_000000_create_branches_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_11_04_000000_create_branches_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_11_07_133452_create_support_sessions_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_11_07_133452_create_support_sessions_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonForBranchSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonForBranchSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonForConfessionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonForConfessionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonForEmployersSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonForEmployersSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BotButtonSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/BranchSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/BranchSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ConfessionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/CountriesSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/CountriesSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/EmployeeSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/EmployeeSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/UserSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/UserSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/de/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/de/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ka/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ka/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/ro/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/ro/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lang/uk/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/lang/uk/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/telegram.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/telegram.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/CreatesApplication.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/CreatesApplication.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/nutgram.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/nutgram.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -353,7 +312,7 @@
       <workItem from="1762936707211" duration="655000" />
       <workItem from="1762978442770" duration="720000" />
       <workItem from="1762981474823" duration="372000" />
-      <workItem from="1763021880937" duration="2258000" />
+      <workItem from="1763021880937" duration="8877000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -451,7 +410,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762981740453</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="🐛 fix(phpstan): Add explicit type hint to resolve undefined property warning 🛡️&#10;&#10;Resolved a PHPStan warning (`Access to an undefined property App\Models\BotButton::$id`) in `BotButtonsRelationManager.php`.&#10;&#10;The issue was fixed by adding an explicit type hint (`\App\Models\BotButton`) to the `$button` argument within the `mapWithKeys` closure, allowing static analysis to correctly infer the model's properties.">
+      <option name="closed" value="true" />
+      <created>1763024774193</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1763024774193</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,14 +445,15 @@
     <MESSAGE value="refactor(bot): organize BotCallback enum into logical sections with comments&#10;&#10;- Grouped enum cases by domain (navigation, confession flow, actions)&#10;- Added descriptive section headers above enum values&#10;- Improved readability and structure without changing behavior" />
     <MESSAGE value="I can create a great commit message for that\! It clearly outlines the new continuous integration setup and the tools used.&#10;&#10;Here is the detailed, emoji-friendly commit message:&#10;&#10;```&#10;✨ feat: Setup GitHub Actions workflow for PHP linting&#10;&#10;Introduces the initial CI/CD workflow (`.github/workflows/lint.yml`) to automatically enforce code quality and style standards on push and pull requests to the `main` and `develop` branches.&#10;&#10;The workflow includes the following tools:&#10;&#10;-  **PHP CS Fixer:** Automated code style fixing.&#10;-  **PHPStan:** Static analysis for bug detection and type validation.&#10;-  **Pint:** Laravel code style checking.&#10;&#10;The job runs on PHP 8.2 and utilizes caching for faster dependency installation.&#10;```" />
     <MESSAGE value="✨ feat: Setup GitHub Actions workflow for PHP linting&#10;&#10;Introduces the initial CI/CD workflow (`.github/workflows/lint.yml`) to automatically enforce code quality and style standards on push and pull requests to the `main` and `develop` branches.&#10;&#10;The workflow includes the following tools:&#10;&#10;-  **PHP CS Fixer:** Automated code style fixing.&#10;-  **PHPStan:** Static analysis for bug detection and type validation.&#10;-  **Pint:** Laravel code style checking." />
-    <option name="LAST_COMMIT_MESSAGE" value="✨ feat: Setup GitHub Actions workflow for PHP linting&#10;&#10;Introduces the initial CI/CD workflow (`.github/workflows/lint.yml`) to automatically enforce code quality and style standards on push and pull requests to the `main` and `develop` branches.&#10;&#10;The workflow includes the following tools:&#10;&#10;-  **PHP CS Fixer:** Automated code style fixing.&#10;-  **PHPStan:** Static analysis for bug detection and type validation.&#10;-  **Pint:** Laravel code style checking." />
+    <MESSAGE value=" fix(phpstan): Add explicit type hint to resolve undefined property warning ️&#10;&#10;Resolved a PHPStan warning (`Access to an undefined property App\Models\BotButton::$id`) in `BotButtonsRelationManager.php`.&#10;&#10;The issue was fixed by adding an explicit type hint (`\App\Models\BotButton`) to the `$button` argument within the `mapWithKeys` closure, allowing static analysis to correctly infer the model's properties." />
+    <option name="LAST_COMMIT_MESSAGE" value=" fix(phpstan): Add explicit type hint to resolve undefined property warning ️&#10;&#10;Resolved a PHPStan warning (`Access to an undefined property App\Models\BotButton::$id`) in `BotButtonsRelationManager.php`.&#10;&#10;The issue was fixed by adding an explicit type hint (`\App\Models\BotButton`) to the `$button` argument within the `mapWithKeys` closure, allowing static analysis to correctly infer the model's properties." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Models/Confession.php</url>
-          <line>34</line>
+          <line>41</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
