@@ -30,10 +30,9 @@ enum BotCallback: string
     case PriestsList = 'priestsList';
     case Donate = 'donate';
     case ShowBranches = 'showBranches';
-// ─────────────────────────────
+    // ─────────────────────────────
     // 🕯️ Branch and emplyers actions
     // ─────────────────────────────
-
 
     case Sorokoust = 'sorokoust';
     case LightACandle = 'lightACandle';
@@ -44,9 +43,8 @@ enum BotCallback: string
     case ContactEmployer = 'contactEmployer';
     case EmployerOpenMenu = 'employerOpenMenu';
     case LearnVideosConfession = 'learnVideosConfession';
-    case LearnImportantNotationAboutConfession= 'learnImportantNotationAboutConfession';
+    case LearnImportantNotationAboutConfession = 'learnImportantNotationAboutConfession';
     case LearnBooksAboutConfession = 'learnBooksAboutConfession';
-
 
     /**
      * Get localized label for menu usage.

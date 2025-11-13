@@ -2,24 +2,17 @@
 
 namespace App\Models;
 
-use App\Support\ExtraDateScopes;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 use LaracraftTech\LaravelDateScopes\DateScopes;
 
 /**
  * App\Models\Statistic
  *
- * @property int $id
- * @property int|null $chat_id
- * @property string $action
- * @property array<array-key, mixed>|null $value
- * @property string|null $category
- * @property Carbon $collected_at
  * @property-read \App\Models\Chat|null $chat
+ *
  * @method static Builder<static>|Statistic centuryToDate(?string $column = null)
  * @method static Builder<static>|Statistic dayToNow(?string $column = null)
  * @method static Builder<static>|Statistic decadeToDate(?string $column = null)
@@ -84,13 +77,8 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Statistic query()
  * @method static Builder<static>|Statistic secondToNow(?string $column = null)
  * @method static Builder<static>|Statistic weekToDate(?string $column = null)
- * @method static Builder<static>|Statistic whereAction($value)
- * @method static Builder<static>|Statistic whereCategory($value)
- * @method static Builder<static>|Statistic whereChatId($value)
- * @method static Builder<static>|Statistic whereCollectedAt($value)
- * @method static Builder<static>|Statistic whereId($value)
- * @method static Builder<static>|Statistic whereValue($value)
  * @method static Builder<static>|Statistic yearToDate(?string $column = null)
+ *
  * @mixin Eloquent
  */
 class Statistic extends Model
@@ -98,6 +86,7 @@ class Statistic extends Model
     use DateScopes;
 
     public $timestamps = false;
+
     protected static $unguarded = true;
 
     protected function casts(): array

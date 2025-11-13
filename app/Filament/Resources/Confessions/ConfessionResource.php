@@ -2,24 +2,21 @@
 
 namespace App\Filament\Resources\Confessions;
 
-use App\Enums\BotCallback;
-use App\Enums\ConfessionSubActions;
 use App\Filament\Resources\Confessions\RelationManagers\BotButtonsRelationManager;
 use App\Models\Confession;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Schemas\Schema;
 
 class ConfessionResource extends Resource
 {
@@ -38,8 +35,7 @@ class ConfessionResource extends Resource
                         Tabs\Tab::make('Translations')
                             ->schema([
                                 Tabs::make('Language Tabs')
-                                    ->tabs(collect($supportedLanguages)->map(fn($lang) =>
-                                    Tabs\Tab::make(strtoupper($lang))
+                                    ->tabs(collect($supportedLanguages)->map(fn ($lang) => Tabs\Tab::make(strtoupper($lang))
                                         ->schema([
                                             TextInput::make("name.{$lang}")
                                                 ->label("Name ({$lang})")
@@ -54,7 +50,7 @@ class ConfessionResource extends Resource
                                             Textarea::make("description.{$lang}")
                                                 ->rows(15)
                                                 ->label("Description ({$lang})"),
-                                        ]))->toArray())
+                                        ]))->toArray()),
                             ]),
 
                         Tabs\Tab::make('General')
@@ -90,7 +86,7 @@ class ConfessionResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->getStateUsing(fn($record) => $record->getTranslation('name', app()->getLocale()))
+                    ->getStateUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('emoji'),

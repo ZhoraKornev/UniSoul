@@ -38,8 +38,7 @@ class BotButtonResource extends Resource
                 TextInput::make('parent_id')
                     ->numeric(),
                 Tabs::make('Translations')
-                    ->tabs(collect(config('app.supported_languages'))->map(fn($lang) =>
-                    Tabs\Tab::make(strtoupper($lang))
+                    ->tabs(collect(config('app.supported_languages'))->map(fn ($lang) => Tabs\Tab::make(strtoupper($lang))
                         ->schema([
                             TextInput::make("text.{$lang}")
                                 ->label("Text ({$lang})")

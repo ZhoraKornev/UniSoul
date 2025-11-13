@@ -9,30 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $branch_id
- * @property int $user_id
- * @property int $manager_id
- * @property int $user_chat_id
- * @property int $manager_chat_id
  * @property State $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Employee $manager
- * @property-read \App\Models\SupportManager $supportManagerProfile
+ * @property-read \App\Models\Employee|null $manager
+ * @property-read \App\Models\SupportManager|null $supportManagerProfile
+ *
  * @method static Builder<static>|SupportSession active()
  * @method static Builder<static>|SupportSession newModelQuery()
  * @method static Builder<static>|SupportSession newQuery()
  * @method static Builder<static>|SupportSession query()
- * @method static Builder<static>|SupportSession whereBranchId($value)
- * @method static Builder<static>|SupportSession whereCreatedAt($value)
- * @method static Builder<static>|SupportSession whereId($value)
- * @method static Builder<static>|SupportSession whereManagerChatId($value)
- * @method static Builder<static>|SupportSession whereManagerId($value)
- * @method static Builder<static>|SupportSession whereStatus($value)
- * @method static Builder<static>|SupportSession whereUpdatedAt($value)
- * @method static Builder<static>|SupportSession whereUserChatId($value)
- * @method static Builder<static>|SupportSession whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class SupportSession extends Model

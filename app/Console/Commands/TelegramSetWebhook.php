@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use SergiX44\Nutgram\Nutgram;
+use SergiX49\Nutgram\Nutgram;
 use Symfony\Component\Console\Command\Command as CommandCLI;
 use Throwable;
 
@@ -35,14 +35,16 @@ class TelegramSetWebhook extends Command
             return $this->removeWebhook($bot);
         }
 
-        $url = $this->option('url') ?? config('app.url') . config('nutgram.global.url');
+        // Added spaces around the concatenation operator
+        $url = $this->option('url') ?? config('app.url').config('nutgram.global.url');
 
         if (empty(config('nutgram.bots.default.token'))) {
             $this->error('The NUTGRAM_BOT_TOKEN is not set in your .env file or config.');
+
             return CommandCLI::FAILURE;
         }
 
-        $this->info("Attempting to set webhook to: {$url}");
+        $this->info('Attempting to set webhook to: '.$url);
 
         try {
             // Set the webhook
@@ -53,15 +55,18 @@ class TelegramSetWebhook extends Command
 
             if ($response->url === $url) {
                 $this->info('Webhook successfully set.');
-                $this->line("Current Webhook Info: " . json_encode($response->toArray(), JSON_PRETTY_PRINT));
+                $this->line('Current Webhook Info: '.json_encode($response->toArray(), JSON_PRETTY_PRINT));
+
                 return CommandCLI::SUCCESS;
-            } else {
-                $this->error('Failed to set webhook or URL mismatch.');
-                return CommandCLI::FAILURE;
             }
+
+            $this->error('Failed to set webhook or URL mismatch.');
+
+            return CommandCLI::FAILURE;
         } catch (Throwable $e) {
-            $this->error("Nutgram API Error: " . $e->getMessage());
-            Log::error("Nutgram Set Webhook Error: " . $e->getMessage());
+            $this->error('Nutgram API Error: '.$e->getMessage());
+            Log::error('Nutgram Set Webhook Error: '.$e->getMessage());
+
             return CommandCLI::FAILURE;
         }
     }
@@ -73,6 +78,7 @@ class TelegramSetWebhook extends Command
     {
         if (empty(config('nutgram.bots.default.token'))) {
             $this->error('The NUTGRAM_BOT_TOKEN is not set in your .env file or config.');
+
             return CommandCLI::FAILURE;
         }
 
@@ -85,15 +91,18 @@ class TelegramSetWebhook extends Command
 
             if (empty($response->url)) {
                 $this->info('Webhook successfully removed.');
-                $this->line("Response: " . json_encode($response->toArray(), JSON_PRETTY_PRINT));
+                $this->line('Response: '.json_encode($response->toArray(), JSON_PRETTY_PRINT));
+
                 return CommandCLI::SUCCESS;
-            } else {
-                $this->error('Failed to remove webhook. Webhook URL is still present.');
-                return CommandCLI::FAILURE;
             }
+
+            $this->error('Failed to remove webhook. Webhook URL is still present.');
+
+            return CommandCLI::FAILURE;
         } catch (Throwable $e) {
-            $this->error("Nutgram API Error: " . $e->getMessage());
-            Log::error("Nutgram Remove Webhook Error: " . $e->getMessage());
+            $this->error('Nutgram API Error: '.$e->getMessage());
+            Log::error('Nutgram Remove Webhook Error: '.$e->getMessage());
+
             return CommandCLI::FAILURE;
         }
     }

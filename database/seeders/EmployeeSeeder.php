@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Branch;
 use App\Models\Employee;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class EmployeeSeeder extends Seeder
 {
@@ -36,7 +36,7 @@ class EmployeeSeeder extends Seeder
             $this->call(BranchSeeder::class);
             $branches = Branch::all();
             if ($branches->isEmpty()) {
-                throw new \Exception("Cannot find or create a Branch. Ensure ConfessionSeeder is run first.");
+                throw new \Exception('Cannot find or create a Branch. Ensure ConfessionSeeder is run first.');
             }
         }
 
@@ -68,7 +68,7 @@ class EmployeeSeeder extends Seeder
                     if ($lang === 'en') {
                         $name['en'] = "{$firstNameEn} {$lastNameEn}";
                         $position['en'] = $positions_en[$positionIndex];
-                        $address['en'] = $fakerEn->streetAddress() . ', Office ' . rand(100, 999);
+                        $address['en'] = $fakerEn->streetAddress().', Office '.rand(100, 999);
                     } elseif ($lang === 'uk') {
                         $name['uk'] = "{$firstNameUk} {$lastNameUk}";
                         $position['uk'] = $positions_uk[$positionIndex];
@@ -77,12 +77,12 @@ class EmployeeSeeder extends Seeder
                         // Використовуємо реалістичні німецькі дані
                         $name['de'] = "{$firstNameDe} {$lastNameDe}";
                         $position['de'] = $positions_de[$positionIndex];
-                        $address['de'] = $fakerDe->streetAddress() . ', Büro ' . rand(100, 999);
+                        $address['de'] = $fakerDe->streetAddress().', Büro '.rand(100, 999);
                     } else {
                         // Для RO та KA використовуємо EN як заглушку
                         $name[$lang] = "{$firstNameEn} {$lastNameEn} ($lang)";
-                        $position[$lang] = $positions_en[$positionIndex] . " ($lang)";
-                        $address[$lang] = $fakerEn->streetAddress() . " ($lang)";
+                        $position[$lang] = $positions_en[$positionIndex]." ($lang)";
+                        $address[$lang] = $fakerEn->streetAddress()." ($lang)";
                     }
                 }
 
@@ -94,7 +94,7 @@ class EmployeeSeeder extends Seeder
                     'age' => rand(22, 60),
                     'is_available' => $isAvailable,
                     'phone' => $fakerUk->unique()->e164PhoneNumber,
-                    'telegram_nickname' => '@' . strtolower($fakerUk->unique()->userName),
+                    'telegram_nickname' => '@'.strtolower($fakerUk->unique()->userName),
                     'address' => $address,
                     'other_info' => $isAvailable ? null : [
                         // Використовуємо українську причину для прикладу

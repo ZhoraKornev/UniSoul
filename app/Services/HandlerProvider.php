@@ -13,23 +13,23 @@ class HandlerProvider
     {
         // Automatically resolve all registered handlers from the service container
         $this->handlers = collect(config('nutgram.handlers', []))
-            ->map(fn(string $handlerClass) => app($handlerClass));
+            ->map(fn (string $handlerClass) => app($handlerClass));
     }
 
     /**
      * Find and return the appropriate handler for the given action.
      *
-     * @param string $botCallbackAction The callback action to handle
-     * @return ActionHandler
+     * @param  string  $botCallbackAction  The callback action to handle
+     *
      * @throws \RuntimeException If no handler supports the action
      */
     public function provide(string $botCallbackAction): ActionHandler
     {
         $handler = $this->handlers->first(
-            fn(ActionHandler $handler) => $handler->isSupport($botCallbackAction)
+            fn (ActionHandler $handler) => $handler->isSupport($botCallbackAction)
         );
 
-        if (!$handler) {
+        if (! $handler) {
             throw new \RuntimeException(
                 "No handler found for action: {$botCallbackAction}"
             );

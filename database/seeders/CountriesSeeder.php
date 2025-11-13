@@ -8,7 +8,6 @@ use Webpatser\Countries\Countries;
 
 class CountriesSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -21,19 +20,19 @@ class CountriesSeeder extends Seeder
 
         // Get all countries from JSON file (force JSON source for seeding)
         $jsonPath = base_path('vendor/webpatser/laravel-countries/src/Models/countries.json');
-        if (!file_exists($jsonPath)) {
-            // Fallback for development installations  
-            $jsonPath = dirname(__DIR__, 3) . '/laravel-countries/src/Models/countries.json';
+        if (! file_exists($jsonPath)) {
+            // Fallback for development installations
+            $jsonPath = dirname(__DIR__, 3).'/laravel-countries/src/Models/countries.json';
         }
-        
-        if (!file_exists($jsonPath)) {
+
+        if (! file_exists($jsonPath)) {
             throw new \RuntimeException('Countries JSON file not found for seeding');
         }
-        
+
         $countries = json_decode(file_get_contents($jsonPath), true);
-        
+
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Invalid JSON in countries file: ' . json_last_error_msg());
+            throw new \RuntimeException('Invalid JSON in countries file: '.json_last_error_msg());
         }
         foreach ($countries as $countryCode => $country) {
             DB::table('countries')->insert([

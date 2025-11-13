@@ -7,13 +7,14 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Resources\RelationManagers\RelationManager;
 
 class BotButtonsRelationManager extends RelationManager
 {
     protected static string $relationship = 'botButtons';
+
     protected static ?string $recordTitleAttribute = 'text';
 
     public function form(Schema $schema): Schema
@@ -29,14 +30,16 @@ class BotButtonsRelationManager extends RelationManager
                     ->label('Parent Button')
                     ->options(function () {
                         $owner = $this->getOwnerRecord();
+
                         /** @var \App\Models\Confession $owner */
                         return \App\Models\BotButton::query()
                             ->where('entity_type', $owner::class)
                             ->where('entity_id', $owner->id)
                             ->get()
-                            ->mapWithKeys(function ($button) {
-                                /** @var \App\Models\BotButton $button */
+                            // Fix applied here: Explicitly define the type for $button argument
+                            ->mapWithKeys(function (\App\Models\BotButton $button) {
                                 $label = $button->getTranslation('text', app()->getLocale()) ?: '[No label]';
+
                                 return [$button->id => $label];
                             })
                             ->toArray();
@@ -82,7 +85,7 @@ class BotButtonsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('parent_id')
                     ->label('Parent')
                     ->formatStateUsing(function ($state, $record) {
-                        if (!$record || !$record->parent) {
+                        if (! $record || ! $record->parent) {
                             return null;
                         }
 

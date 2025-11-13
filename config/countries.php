@@ -30,7 +30,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Choose between 'json' or 'database' as your data source.
-    | 
+    |
     | - json: Use the built-in JSON file (recommended for most use cases)
     | - database: Use database table (requires running migrations)
     |

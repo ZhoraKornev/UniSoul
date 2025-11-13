@@ -3,23 +3,16 @@
 namespace App\Models;
 
 use App\Enums\BotCallback;
-use App\Enums\ConfessionSubActions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Translatable\HasTranslations;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Webpatser\Countries\Countries;
 
 /**
  * @property int $id
- * @property array<array-key, mixed> $name
- * @property array<array-key, mixed> $full_name
- * @property array<array-key, mixed> $description
  * @property string $emoji
- * @property bool $active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BotButton> $botButtons
  * @property-read int|null $bot_buttons_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Branch> $branches
@@ -28,24 +21,19 @@ use Webpatser\Countries\Countries;
  * @property-read int|null $countries_count
  * @property-read array $available_action_enums
  * @property-read mixed $translations
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession where(\Closure|string|array|\Illuminate\Database\Query\Expression $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereId(mixed $value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereEmoji($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereFullName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereJsonContainsLocale(string $column, string $locale, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereJsonContainsLocales(string $column, array $locales, ?mixed $value, string $operand = '=')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocale(string $column, string $locale)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereLocales(string $column, array $locales)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Confession whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
-
 class Confession extends Model
 {
     use HasFactory;

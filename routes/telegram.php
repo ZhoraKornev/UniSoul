@@ -11,7 +11,6 @@ use App\Telegram\Middleware\SetUserLocaleMiddleware;
 use SergiX44\Nutgram\Nutgram;
 
 /** @var Nutgram $bot */
-
 $bot->middleware(CollectChatData::class);
 $bot->middleware(CheckMaintenance::class);
 $bot->middleware(SetUserLocaleMiddleware::class);
@@ -21,13 +20,13 @@ $bot->registerCommand(SettingsCommand::class);
 $bot->registerCommand(HelpCommand::class);
 
 $bot->onMessage(function (Nutgram $bot) {
-    if (!str_starts_with($bot->message()->text ?? '', '/')) {
+    if (! str_starts_with($bot->message()->text ?? '', '/')) {
         MainMenuConversation::begin($bot);
     }
 });
 
 // Main menu navigation
-$bot->onCallbackQueryData(BotCallback::MainMenu->value . '@backToMain', function (Nutgram $bot) {
+$bot->onCallbackQueryData(BotCallback::MainMenu->value.'@backToMain', function (Nutgram $bot) {
     MainMenuConversation::begin($bot);
 });
 

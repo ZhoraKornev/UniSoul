@@ -20,7 +20,7 @@ class BotController extends Controller
 
         return response()->json([
             'thread_id' => $threadId,
-            'response' => $response
+            'response' => $response,
         ]);
     }
 }

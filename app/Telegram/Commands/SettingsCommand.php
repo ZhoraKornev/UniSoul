@@ -3,8 +3,8 @@
 namespace App\Telegram\Commands;
 
 use App\Telegram\Conversations\SettingsConversation;
-use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Handlers\Type\Command;
+use SergiX44\Nutgram\Nutgram;
 
 class SettingsCommand extends Command
 {

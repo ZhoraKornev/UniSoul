@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Branch;
 use App\Models\Confession;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class BranchSeeder extends Seeder
 {
@@ -22,11 +22,11 @@ class BranchSeeder extends Seeder
         // 1. Перевіряємо, чи існує Confession, якщо ні, створюємо його
         $confessionId = Confession::inRandomOrder()->value('id');
 
-        if (!$confessionId) {
+        if (! $confessionId) {
             $this->call(ConfessionSeeder::class);
             $confessionId = Confession::inRandomOrder()->value('id');
-            if (!$confessionId) {
-                throw new \Exception("Cannot find or create a Confession.");
+            if (! $confessionId) {
+                throw new \Exception('Cannot find or create a Confession.');
             }
         }
 
@@ -43,38 +43,38 @@ class BranchSeeder extends Seeder
 
             // UK
             $baseCityUk = $fakerUk->city;
-            $baseAddressUk = "м. {$baseCityUk}, " . $fakerUk->streetAddress();
+            $baseAddressUk = "м. {$baseCityUk}, ".$fakerUk->streetAddress();
             $baseDescUk = $fakerUk->sentence(8);
 
             // EN
             $baseCityEn = $fakerEn->city;
-            $baseAddressEn = $fakerEn->streetAddress() . ", {$baseCityEn}";
+            $baseAddressEn = $fakerEn->streetAddress().", {$baseCityEn}";
             $baseDescEn = $fakerEn->sentence(8);
 
             // DE
             $baseCityDe = $fakerDe->city;
-            $baseAddressDe = $fakerDe->streetAddress() . ", {$baseCityDe}";
+            $baseAddressDe = $fakerDe->streetAddress().", {$baseCityDe}";
             $baseDescDe = $fakerDe->sentence(8);
 
             // --- Заповнення багатомовних полів ---
             foreach ($supportedLanguages as $lang) {
                 if ($lang === 'uk') {
-                    $name['uk'] = $baseCityUk . ' Філія ' . ($i + 1);
+                    $name['uk'] = $baseCityUk.' Філія '.($i + 1);
                     $address['uk'] = $baseAddressUk;
                     $description['uk'] = $baseDescUk;
                 } elseif ($lang === 'en') {
-                    $name['en'] = $baseCityEn . ' Branch ' . ($i + 1);
+                    $name['en'] = $baseCityEn.' Branch '.($i + 1);
                     $address['en'] = $baseAddressEn;
                     $description['en'] = $baseDescEn;
                 } elseif ($lang === 'de') {
-                    $name['de'] = $baseCityDe . ' Zweigstelle ' . ($i + 1);
+                    $name['de'] = $baseCityDe.' Zweigstelle '.($i + 1);
                     $address['de'] = $baseAddressDe;
                     $description['de'] = $baseDescDe;
                 } else {
                     // Заглушка для RO та KA (використовуємо англійську базу)
-                    $name[$lang] = $baseCityEn . ' Branch ' . ($i + 1) . " ($lang)";
-                    $address[$lang] = $baseAddressEn . " ($lang)";
-                    $description[$lang] = $baseDescEn . " ($lang)";
+                    $name[$lang] = $baseCityEn.' Branch '.($i + 1)." ($lang)";
+                    $address[$lang] = $baseAddressEn." ($lang)";
+                    $description[$lang] = $baseDescEn." ($lang)";
                 }
             }
 

@@ -30,7 +30,15 @@ class BackNavigationHandler implements ActionHandler
 
     private function showConfessionMenu(Nutgram $bot): void
     {
+        /** @var BotButton|null $confessionButton */
         $confessionButton = BotButton::where('callback_data', 'confession_menu')->first();
+
+        if (! $confessionButton) {
+            $this->showMainMenu($bot);
+
+            return;
+        }
+
         $buttons = BotButton::where('parent_id', $confessionButton->id)->orderBy('order')->get();
 
         $keyboard = InlineKeyboardMarkup::make();

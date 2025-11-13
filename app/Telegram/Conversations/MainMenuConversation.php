@@ -25,7 +25,7 @@ class MainMenuConversation extends BaseConversation
             $label = $button->getTranslation('text', $locale);
 
             $callbackKey = $button->callback_data->value;
-            $callbackHandlerMethod = BotCallback::PREFIX_FOR_FUNCTION . $button->callbackEnum()->name;
+            $callbackHandlerMethod = BotCallback::PREFIX_FOR_FUNCTION.$button->callbackEnum()->name;
 
             $callback = "{$callbackKey}@{$callbackHandlerMethod}";
 
@@ -48,7 +48,7 @@ class MainMenuConversation extends BaseConversation
                 /** @var Confession $confession */
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
-                        text: $confession->emoji . ' ' . $confession->getTranslation('name', $locale),
+                        text: $confession->emoji.' '.$confession->getTranslation('name', $locale),
                         callback_data: $this->buildCallbackData(
                             ConfessionConversation::CONFESSION_PREFIX,
                             $confession->id,

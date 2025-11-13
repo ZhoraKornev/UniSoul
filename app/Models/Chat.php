@@ -4,24 +4,14 @@ namespace App\Models;
 
 use App\Enums\Gender;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Builder;
 use LaracraftTech\LaravelDateScopes\DateScopes;
 
 /**
- * @property int $chat_id
- * @property string $type
- * @property string $first_name
- * @property string|null $last_name
- * @property string|null $username
- * @property string|null $language_code
- * @property \Illuminate\Support\Carbon|null $started_at
- * @property \Illuminate\Support\Carbon|null $blocked_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Glorand\Model\Settings\Models\ModelSettings|null $modelSettings
+ *
  * @method static Builder<static>|Chat centuryToDate(?string $column = null)
  * @method static Builder<static>|Chat dayToNow(?string $column = null)
  * @method static Builder<static>|Chat decadeToDate(?string $column = null)
@@ -86,29 +76,23 @@ use LaracraftTech\LaravelDateScopes\DateScopes;
  * @method static Builder<static>|Chat query()
  * @method static Builder<static>|Chat secondToNow(?string $column = null)
  * @method static Builder<static>|Chat weekToDate(?string $column = null)
- * @method static Builder<static>|Chat whereBlockedAt($value)
- * @method static Builder<static>|Chat whereChatId($value)
- * @method static Builder<static>|Chat whereCreatedAt($value)
- * @method static Builder<static>|Chat whereFirstName($value)
- * @method static Builder<static>|Chat whereLanguageCode($value)
- * @method static Builder<static>|Chat whereLastName($value)
  * @method static Builder<static>|Chat whereSettings(string $setting, string $operator, $value, ?bool $filterOnMissing = null)
- * @method static Builder<static>|Chat whereStartedAt($value)
- * @method static Builder<static>|Chat whereType($value)
- * @method static Builder<static>|Chat whereUpdatedAt($value)
- * @method static Builder<static>|Chat whereUsername($value)
  * @method static Builder<static>|Chat yearToDate(?string $column = null)
+ *
  * @mixin \Eloquent
  */
 class Chat extends Model
 {
+    use DateScopes;
     use HasFactory;
     use HasSettingsTable;
-    use DateScopes;
 
     protected $primaryKey = 'chat_id';
+
     protected $keyType = 'string';
+
     public $incrementing = false;
+
     protected static $unguarded = true;
 
     protected bool $persistSetting = true;
@@ -126,7 +110,6 @@ class Chat extends Model
             'blocked_at' => 'datetime',
         ];
     }
-
 
     public function getSettingsRules(): array
     {

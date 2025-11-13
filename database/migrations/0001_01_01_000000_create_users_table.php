@@ -64,7 +64,7 @@ return new class extends Migration
             // 3x: Temporary/Flow States (e.g., 30=AWAITING_NAME)
             $table->unsignedSmallInteger('current_state')
                 ->default(State::AwaitingConfirmation->value) // Default value from Enum
-                ->comment('Integer status code for the bot conversation flow. Uses grouped statuses: 1x (Active), 2x (Non-Active), 3x (Flow). Default: ' . State::AwaitingConfirmation->value);
+                ->comment('Integer status code for the bot conversation flow. Uses grouped statuses: 1x (Active), 2x (Non-Active), 3x (Flow). Default: '.State::AwaitingConfirmation->value);
 
             $table->json('configuration')
                 ->nullable()

@@ -24,8 +24,8 @@ class DonateConversation extends Conversation
 
     public function getAmount(Nutgram $bot): void
     {
-        //get the amount
-        $amount = (int)$bot->message()?->text;
+        // get the amount
+        $amount = (int) $bot->message()?->text;
 
         if ($amount < 1) {
             $bot->sendMessage(

@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\SupportManager;
 use App\Models\SupportSession;
 use App\Services\GeminiAIService;
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -15,9 +16,10 @@ class SupportConversation extends BaseConversation
 {
     // Ці властивості автоматично зберігаються Nutgram між кроками
     public ?int $branchId = null;
+
     public ?int $employeeId = null; // Обраний співробітник
 
-    public static function beginWithParams(Nutgram $bot, int $branchId, ?int $employeeId = null): self
+    public static function beginWithParams(Nutgram $bot, int $branchId, ?int $employeeId = null)
     {
         // Store params temporarily in bot's user data
         $bot->setUserData('temp_branch_id', $branchId);
@@ -33,7 +35,7 @@ class SupportConversation extends BaseConversation
     public function start(Nutgram $bot): ?string
     {
         // Retrieve params from bot's user data
-        if (!$this->branchId) {
+        if (! $this->branchId) {
             $this->branchId = $bot->getUserData('temp_branch_id');
             $this->employeeId = $bot->getUserData('temp_employee_id');
 
@@ -42,26 +44,35 @@ class SupportConversation extends BaseConversation
             $bot->deleteUserData('temp_employee_id');
         }
 
-        if (!$this->branchId) {
+        if (! $this->branchId) {
             $bot->sendMessage(__('telegram.support.error_branch_missing'));
-            return $this->end();
+            $this->end();
+
+            return null;
         }
 
         // 2. Перевіряємо, чи клієнт вже має активну сесію
         if (SupportSession::where('user_id', $bot->userId())->where('status', 'ACTIVE')->exists()) {
             $bot->sendMessage(__('telegram.support.already_active_wait'));
             // Якщо сесія є, перевіряємо режим і маршрутизуємо відповідно
+            /** @var SupportSession|null $session */
             $session = SupportSession::where('user_id', $bot->userId())->where('status', 'ACTIVE')->first();
 
-            if ($session->mode === 'HUMAN') {
+            if ($session && $session->getAttribute('mode') === 'HUMAN') {
                 $this->next('routeMessage');
+
+                return null;
             }
-            if ($session->mode === 'AI') {
+            if ($session && $session->getAttribute('mode') === 'AI') {
                 $this->next('routeAIMessage');
+
+                return null;
             }
 
             // Якщо не визначено
             $this->end();
+
+            return null;
         }
 
         $bot->sendMessage(__('telegram.support.connecting_text')); // "Підключення... очікуйте"
@@ -70,7 +81,7 @@ class SupportConversation extends BaseConversation
         $manager = $this->findPreferredManager();
 
         // 4. Якщо пріоритетний менеджер недоступний, шукаємо будь-якого доступного в цій філії
-        if (!$manager) {
+        if (! $manager) {
             $manager = $this->findAvailableManagerByBranch($this->branchId);
         }
 
@@ -90,31 +101,32 @@ class SupportConversation extends BaseConversation
     {
         try {
             // Отримуємо дані Employee для імені
-            $employee = Employee::find($manager->employee_id);
+            /** @var Employee|null $employee */
+            $employee = Employee::find($manager->getAttribute('employee_id'));
 
             $session = SupportSession::create([
                 'branch_id' => $this->branchId,
                 'user_id' => $bot->userId(),
-                'manager_id' => $manager->employee_id, // manager_id - це ID Employee
+                'manager_id' => $manager->getAttribute('employee_id'), // manager_id - це ID Employee
                 'user_chat_id' => $bot->chatId(),
-                'manager_chat_id' => $manager->telegram_chat_id,
+                'manager_chat_id' => $manager->getAttribute('telegram_chat_id'),
                 'status' => 'ACTIVE',
                 'mode' => 'HUMAN',
             ]);
 
-            $managerName = $employee->getTranslation('name', 'uk') ?? 'Менеджер';
+            $managerName = $employee ? $employee->getAttribute('name') : 'Менеджер';
 
             // Повідомляємо менеджера
-            $bot->sendNotification(
-                chat_id: $manager->telegram_chat_id,
+            $bot->sendMessage(
                 text: __('telegram.support.new_session_manager', [
                     'user_id' => $bot->userId(),
-                    'user_name' => $bot->user()?->username ?? $bot->user()?->firstName,
+                    'user_name' => $bot->user()->username ?? $bot->user()->first_name,
                 ]),
+                chat_id: $manager->getAttribute('telegram_chat_id'),
                 reply_markup: InlineKeyboardMarkup::make()->addRow(
                     InlineKeyboardButton::make(
                         text: __('telegram.support.close_session_button'),
-                        callback_data: 'manager_close_session@' . $session->id
+                        callback_data: 'manager_close_session@'.$session->getAttribute('id')
                     )
                 )
             );
@@ -124,10 +136,13 @@ class SupportConversation extends BaseConversation
             // Переходимо до кроку маршрутизації
             $this->next('routeMessage');
 
+            return null;
         } catch (Throwable $e) {
             $bot->sendMessage(__('telegram.support.error_general'));
-            \Log::error('Human Support Init Error: ' . $e->getMessage());
+            Log::error('Human Support Init Error: '.$e->getMessage());
             $this->end();
+
+            return null;
         }
     }
 
@@ -158,10 +173,13 @@ class SupportConversation extends BaseConversation
             // Переходимо до кроку обробки ШІ
             $this->next('routeAIMessage');
 
+            return null;
         } catch (Throwable $e) {
             $bot->sendMessage(__('telegram.support.error_general_ai'));
-            \Log::error('AI Support Init Error: ' . $e->getMessage());
-            return $this->end();
+            Log::error('AI Support Init Error: '.$e->getMessage());
+            $this->end();
+
+            return null;
         }
     }
 
@@ -176,14 +194,16 @@ class SupportConversation extends BaseConversation
             ->where('mode', 'HUMAN')
             ->first();
 
-        if ($session && $session->manager_chat_id) {
+        if ($session && $session->getAttribute('manager_chat_id')) {
             // Пересилаємо повідомлення менеджеру
             $bot->forwardMessage(
-                chat_id: $session->manager_chat_id,
+                chat_id: $session->getAttribute('manager_chat_id'),
                 from_chat_id: $bot->chatId(),
                 message_id: $bot->messageId()
             );
-            return $this->next('routeMessage');
+            $this->next('routeMessage');
+
+            return null;
         }
 
         // Якщо сесія перейшла в режим AI або закрита
@@ -195,7 +215,8 @@ class SupportConversation extends BaseConversation
      */
     public function routeAIMessage(Nutgram $bot): ?string
     {
-        $session = SupportSession::whereUserChatId($bot->chatId())
+        /** @var SupportSession|null $session */
+        $session = SupportSession::where('user_chat_id', $bot->chatId())
             ->where('status', 'ACTIVE')
             ->where('mode', 'AI')
             ->first();
@@ -208,7 +229,7 @@ class SupportConversation extends BaseConversation
 
             // 2. Надсилаємо повідомлення до ШІ (перевірка на тип контенту)
             // Тимчасовий текст, якщо це не текстове повідомлення
-            $userMessage = $bot->message()?->text ?? 'Користувач надіслав файл або нетекстове повідомлення.';
+            $userMessage = $bot->message()->text ?? 'Користувач надіслав файл або нетекстове повідомлення.';
 
             $aiResponse = $aiService->sendMessage(
                 threadId: $session->ai_thread_id,
@@ -221,7 +242,9 @@ class SupportConversation extends BaseConversation
 
             // Тут потрібно додати логіку перевірки доступності менеджера для 'handoff'
 
-            return $this->next('routeAIMessage');
+            $this->next('routeAIMessage');
+
+            return null;
         }
 
         // Якщо сесія не знайдена або закрита
@@ -231,7 +254,10 @@ class SupportConversation extends BaseConversation
     protected function handleSessionEnd(Nutgram $bot): ?string
     {
         $bot->sendMessage(__('telegram.support.session_ended_auto'));
-        return $this->end();
+
+        $this->end();
+
+        return null;
     }
 
     /**
@@ -239,13 +265,16 @@ class SupportConversation extends BaseConversation
      */
     protected function findPreferredManager(): ?SupportManager
     {
-        if (!$this->employeeId) {
+        if (! $this->employeeId) {
             return null;
         }
 
-        return SupportManager::where('employee_id', $this->employeeId)
+        /** @var SupportManager|null $manager */
+        $manager = SupportManager::where('employee_id', $this->employeeId)
             ->where('is_available', true)
             ->first();
+
+        return $manager;
     }
 
     /**

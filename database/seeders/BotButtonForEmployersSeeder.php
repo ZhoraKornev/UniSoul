@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BotButton;
 use App\Enums\BotCallback;
+use App\Models\BotButton;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
@@ -28,12 +28,11 @@ class BotButtonForEmployersSeeder extends Seeder
     private function seedForEmployers(Employee $employee): void
     {
         $confessionRootButtonId = BotButton::whereCallbackData(BotCallback::PriestsList->value)->select('id')->first()?->id;
-        if (!$confessionRootButtonId) {
+        if (! $confessionRootButtonId) {
             return;
         }
 
         $employerID = $employee->id;
-
 
         $menu = BotButton::create([
             'parent_id' => $confessionRootButtonId,
@@ -43,8 +42,6 @@ class BotButtonForEmployersSeeder extends Seeder
             'callback_data' => BotCallback::ConfessionMenuAction->value,
             'order' => 3,
         ]);
-
-
 
         // LEVEL 2
 
@@ -66,7 +63,7 @@ class BotButtonForEmployersSeeder extends Seeder
                 'text' => $this->trans($action),
                 'callback_data' => $action->value,
                 'order' => $index + 1,
-                'need_donations' => fake()->boolean()
+                'need_donations' => fake()->boolean(),
             ]);
         }
 
@@ -75,7 +72,7 @@ class BotButtonForEmployersSeeder extends Seeder
             'parent_id' => $menu->id,
             'entity_type' => Employee::class,
             'entity_id' => $employerID,
-            'text' => $this->trans(BotCallback::BackButton,            ),
+            'text' => $this->trans(BotCallback::BackButton),
             'callback_data' => BotCallback::BackButton->value,
             'order' => 998,
         ]);

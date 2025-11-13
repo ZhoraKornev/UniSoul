@@ -7,9 +7,6 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 /**
  * Return a formatted string (in C# like)
- * @param string $string
- * @param array $args
- * @return string
  */
 function f(string $string, array $args = []): string
 {
@@ -26,22 +23,19 @@ function f(string $string, array $args = []): string
 
 /**
  * Render an HTML message
- * @param string $view
- * @param array $values
- * @return string
  */
 function message(string $view, array $values = []): string
 {
     return rescue(static function () use ($view, $values) {
-        return (string)Str::of(view("messages.$view", $values)->render())
+        return (string) Str::of(view("messages.$view", $values)->render())
             ->replaceMatches('/\r\n|\r|\n/', '')
             ->replace(['<br>', '<BR>'], "\n");
-    }, 'messages.' . $view);
+    }, 'messages.'.$view);
 }
 
 /**
  * Dump a message to dev chat
- * @param $message
+ *
  * @throws JsonException
  */
 function dt($message): void
@@ -63,10 +57,6 @@ function dt($message): void
 
 /**
  * Cast a value
- * @param string $type
- * @param mixed $value
- * @param mixed|null $default
- * @return array|bool|float|int|object|string
  */
 function cast(string $type, mixed $value, mixed $default = null): array|bool|float|int|object|string
 {
@@ -75,22 +65,18 @@ function cast(string $type, mixed $value, mixed $default = null): array|bool|flo
     }
 
     return match ($type) {
-        'int', 'integer' => (int)$value,
-        'real', 'float', 'double' => (float)$value,
-        'string' => (string)$value,
-        'bool', 'boolean' => (bool)$value,
-        'object' => (object)$value,
-        'array' => (array)$value,
+        'int', 'integer' => (int) $value,
+        'real', 'float', 'double' => (float) $value,
+        'string' => (string) $value,
+        'bool', 'boolean' => (bool) $value,
+        'object' => (object) $value,
+        'array' => (array) $value,
         default => $value,
     };
 }
 
 /**
  * Save bot statistic
- * @param string $action
- * @param string|null $category
- * @param array|null $value
- * @param int|null $chat_id
  */
 function stats(string $action, ?string $category = null, ?array $value = null, ?int $chat_id = null): void
 {
@@ -116,12 +102,12 @@ function sendExceptionViaTelegram(Throwable $e): void
     );
 }
 
-if (!function_exists('cb')) {
+if (! function_exists('cb')) {
     function cb(string $action, $id = null): string
     {
         return json_encode([
             'action' => $action,
-            'id'     => $id,
+            'id' => $id,
         ]);
     }
 }

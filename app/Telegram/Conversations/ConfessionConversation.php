@@ -7,6 +7,7 @@ use App\Models\BotButton;
 use App\Models\Branch;
 use App\Models\Confession;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
@@ -23,16 +24,17 @@ class ConfessionConversation extends BaseConversation
         $this->menuText(__('telegram.select_confession'));
 
         foreach ($confessions as $confession) {
-            \Log::info('ConfessionConversation  start', ['$confession->id' => $confession->id]);
+            Log::info('ConfessionConversation  start', ['$confession->id' => $confession->getAttribute('id')]);
             /** @var Confession $confession */
             $this->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
+                    text: $confession->emoji.' '.$confession->getTranslation('name', app()->getLocale()),
                     callback_data: $this->buildCallbackData(
                         self::CONFESSION_PREFIX,
-                        $confession->id,
-                        BotCallback::ViewConfession->name,
-                        BotCallback::PREFIX_FOR_FUNCTION . BotCallback::ViewConfession->name
+                        'ViewConfession',
+                        'handleViewConfession',
+                        null,
+                        $confession->getAttribute('id')
                     )
                 )
             );
@@ -41,7 +43,7 @@ class ConfessionConversation extends BaseConversation
         $this->addButtonRow(
             InlineKeyboardButton::make(
                 text: __('telegram.button_back'),
-                callback_data: BotCallback::MainMenu->value . '@handleMainMenu'
+                callback_data: BotCallback::MainMenu->value.'@handleMainMenu'
             )
         );
 
@@ -55,17 +57,18 @@ class ConfessionConversation extends BaseConversation
     public function handleViewConfession(Nutgram $bot): void
     {
         $data = $bot->callbackQuery()->data ?? '';
-        \Log::info('handleViewConfession', ['callback_data' => $data]);
+        Log::info('handleViewConfession', ['callback_data' => $data]);
 
         $callBackDTO = $this->parseCallbackData($data);
 
         $confession = Confession::find($callBackDTO->confessionId);
 
-        if (!$confession) {
-            \Log::info('handleViewConfession', ['$confession' => $confession, '$callBackDTO->confessionId' => $callBackDTO->confessionId]);
+        if (! $confession) {
+            Log::info('handleViewConfession', ['$confession' => $confession, '$callBackDTO->confessionId' => $callBackDTO->confessionId]);
 
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
@@ -74,8 +77,8 @@ class ConfessionConversation extends BaseConversation
         $this->clearButtons();
         // Add timestamp to ensure content is different from previous calls
         $this->menuText(
-            $confession->emoji . ' ' . $confession->getTranslation('name', $locale) . "\n\n" .
-            $confession->getTranslation('description', $locale) . "\n\n📅 " . now()->format('H:i:s')
+            $confession->emoji.' '.$confession->getTranslation('name', $locale)."\n\n".
+            $confession->getTranslation('description', $locale)."\n\n📅 ".now()->format('H:i:s')
         );
 
         /** @var BotButton|null $confessionRootButton */
@@ -83,9 +86,9 @@ class ConfessionConversation extends BaseConversation
             ->select('id')
             ->first();
         $confessionRootButtonId = $confessionRootButton?->id;
-        \Log::info('Root button lookup', ['root_button_id' => $confessionRootButtonId]);
+        Log::info('Root button lookup', ['root_button_id' => $confessionRootButtonId]);
 
-        if (!$confessionRootButtonId) {
+        if (! $confessionRootButtonId) {
             return;
         }
 
@@ -96,7 +99,7 @@ class ConfessionConversation extends BaseConversation
             ->where('active', true)
             ->orderBy('order')
             ->get();
-        \Log::info('Buttons found', ['count' => $buttons->count()]);
+        Log::info('Buttons found', ['count' => $buttons->count()]);
 
         foreach ($buttons as $button) {
             /** @var BotButton $button */
@@ -104,9 +107,9 @@ class ConfessionConversation extends BaseConversation
                 $button->callback_data->value,
                 $confession->id,
                 $button->callback_data->name,
-                BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name
+                BotCallback::PREFIX_FOR_FUNCTION.$button->callback_data->name
             );
-            \Log::info('Adding button', ['text' => $button->getTranslation('text', $locale), 'callback' => $callbackData]);
+            Log::info('Adding button', ['text' => $button->getTranslation('text', $locale), 'callback' => $callbackData]);
 
             $this->addButtonRow(
                 InlineKeyboardButton::make(
@@ -129,9 +132,10 @@ class ConfessionConversation extends BaseConversation
         $parsed = $this->parseCallbackData($data);
         $confession = Confession::find($parsed->confessionId);
 
-        if (!$confession) {
+        if (! $confession) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
@@ -140,8 +144,9 @@ class ConfessionConversation extends BaseConversation
             ->where('entity_id', $confession->id)
             ->first();
 
-        if (!$learnButton) {
+        if (! $learnButton) {
             $bot->answerCallbackQuery(text: __('telegram.error_action'), show_alert: true);
+
             return;
         }
 
@@ -160,7 +165,7 @@ class ConfessionConversation extends BaseConversation
             $this->addButtonRow(
                 InlineKeyboardButton::make(
                     text: $button->getTranslation('text', $locale),
-                    callback_data: $button->callback_data->value . ':' . $confession->id . '@' . BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name
+                    callback_data: $button->callback_data->value.':'.$confession->id.'@'.BotCallback::PREFIX_FOR_FUNCTION.$button->callback_data->name
                 )
             );
         }
@@ -192,6 +197,7 @@ class ConfessionConversation extends BaseConversation
         if (Confession::whereId($callbackDataDTO->confessionId)->exists() === false) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
@@ -203,15 +209,16 @@ class ConfessionConversation extends BaseConversation
             ->where('active', true)
             ->first();
 
-        if (!$parent) {
+        if (! $parent) {
             $bot->answerCallbackQuery(text: __('telegram.error_action'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
         /** @var BotButton $parent */
         $childrenButtons = BotButton::where('parent_id', $parent->id)->orderBy('order')->get();
-        \Log::info('Children buttons', ['count' => $childrenButtons->count()]);
+        Log::info('Children buttons', ['count' => $childrenButtons->count()]);
 
         $this->clearButtons();
         $this->menuText($parent->getTranslation('text', $locale));
@@ -225,12 +232,11 @@ class ConfessionConversation extends BaseConversation
                         $btn->callback_data->value,
                         $callbackDataDTO->confessionId,
                         $btn->callback_data->name,
-                        BotCallback::PREFIX_FOR_FUNCTION . $btn->callback_data->name
+                        BotCallback::PREFIX_FOR_FUNCTION.$btn->callback_data->name
                     )
                 )
             );
         }
-
 
         if ($bot->isCallbackQuery()) {
             $bot->answerCallbackQuery();
@@ -265,9 +271,10 @@ class ConfessionConversation extends BaseConversation
         $parsed = $this->parseCallbackData($data);
         $confession = Confession::find($parsed->confessionId);
 
-        if (!$confession) {
+        if (! $confession) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
@@ -287,7 +294,7 @@ class ConfessionConversation extends BaseConversation
                 /** @var Branch $branch */
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
-                        text: "📍 " . $branch->getTranslation('name', $locale),
+                        text: '📍 '.$branch->getTranslation('name', $locale),
                         callback_data: $this->buildCallbackData(
                             'branch_details',
                             $confession->id,
@@ -326,19 +333,20 @@ class ConfessionConversation extends BaseConversation
         $confession = Confession::find($parsed->confessionId);
         $branch = Branch::find($parsed->actionId);
 
-        if (!$confession || !$branch) {
+        if (! $confession || ! $branch) {
             $bot->answerCallbackQuery(text: __('telegram.error_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
         $this->clearButtons();
         $locale = app()->getLocale();
 
-        $text = "📍 " . $branch->getTranslation('name', $locale) . "\n\n";
-        $text .= "📧 " . $branch->getTranslation('address', $locale) . "\n";
+        $text = '📍 '.$branch->getTranslation('name', $locale)."\n\n";
+        $text .= '📧 '.$branch->getTranslation('address', $locale)."\n";
         if ($branch->phone) {
-            $text .= "📞 " . $branch->phone . "\n";
+            $text .= '📞 '.$branch->phone."\n";
         }
         $this->menuText($text);
 
@@ -357,7 +365,7 @@ class ConfessionConversation extends BaseConversation
                         $button->callback_data->value,
                         $confession->id,
                         $button->callback_data->name,
-                        BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name,
+                        BotCallback::PREFIX_FOR_FUNCTION.$button->callback_data->name,
                         $branch->id
                     )
                 )
@@ -386,18 +394,18 @@ class ConfessionConversation extends BaseConversation
     public function handlePriestsList(Nutgram $bot): void
     {
         $data = $bot->callbackQuery()->data ?? '';
-        \Log::info('handlePriestsList', ['data' => $data]);
+        Log::info('handlePriestsList', ['data' => $data]);
         $parsed = $this->parseCallbackData($data);
         $confession = Confession::find($parsed->confessionId);
 
-        if (!$confession) {
+        if (! $confession) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
 
             return;
         }
 
-        \Log::info('handlePriestsList  $confession', ['data' => $confession->toArray()]);
+        Log::info('handlePriestsList  $confession', ['data' => $confession->toArray()]);
         $employees = Employee::whereHas('branch', function ($query) use ($confession) {
             $query->where('confession_id', $confession->id);
         })->where('is_available', true)->get();
@@ -411,7 +419,7 @@ class ConfessionConversation extends BaseConversation
             foreach ($employees as $employee) {
                 $this->addButtonRow(
                     InlineKeyboardButton::make(
-                        text: "👤 " . $employee->getTranslation('name', $locale),
+                        text: '👤 '.$employee->getTranslation('name', $locale),
                         callback_data: $this->buildCallbackData(
                             'employer_menu',
                             $confession->id,
@@ -452,19 +460,20 @@ class ConfessionConversation extends BaseConversation
         $confession = Confession::find($parsed->confessionId);
         $employee = Employee::find($parsed->actionId);
 
-        if (!$confession || !$employee) {
+        if (! $confession || ! $employee) {
             $bot->answerCallbackQuery(text: __('telegram.error_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
         $locale = app()->getLocale();
         $this->clearButtons();
 
-        $text = "👤 " . $employee->getTranslation('name', $locale) . "\n";
-        $text .= "📋 " . $employee->getTranslation('position', $locale) . "\n";
+        $text = '👤 '.$employee->getTranslation('name', $locale)."\n";
+        $text .= '📋 '.$employee->getTranslation('position', $locale)."\n";
         if ($employee->phone) {
-            $text .= "📞 " . $employee->phone . "\n";
+            $text .= '📞 '.$employee->phone."\n";
         }
         $this->menuText($text);
 
@@ -482,7 +491,7 @@ class ConfessionConversation extends BaseConversation
                         $button->callback_data->value,
                         $confession->id,
                         $button->callback_data->name,
-                        BotCallback::PREFIX_FOR_FUNCTION . $button->callback_data->name,
+                        BotCallback::PREFIX_FOR_FUNCTION.$button->callback_data->name,
                         $employee->id
                     )
                 )
@@ -550,9 +559,10 @@ class ConfessionConversation extends BaseConversation
         $confession = Confession::find($parsed->confessionId);
         $employee = Employee::find($parsed->actionId);
 
-        if (!$confession || !$employee) {
+        if (! $confession || ! $employee) {
             $bot->answerCallbackQuery(text: __('telegram.error_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
@@ -565,7 +575,6 @@ class ConfessionConversation extends BaseConversation
 
         // 1. ПЕРЕВІРКА: Чи потрібна пожертва
         if ($button && $button->need_donations) {
-
             if ($bot->isCallbackQuery()) {
                 $bot->answerCallbackQuery();
             }
@@ -621,15 +630,16 @@ class ConfessionConversation extends BaseConversation
         $id = $parsed->confessionId;
         $confession = Confession::find($id);
 
-        if (!$confession) {
+        if (! $confession) {
             $bot->answerCallbackQuery(text: __('telegram.error_confession_not_found'), show_alert: true);
             MainMenuConversation::begin($bot);
+
             return;
         }
 
         /** @var Confession $confession */
         $this->clearButtons();
-        $this->menuText(__('telegram.confession_actions.' . $action) . ' - ' . __('telegram.coming_soon'));
+        $this->menuText(__('telegram.confession_actions.'.$action).' - '.__('telegram.coming_soon'));
 
         $this->addButtonRow(
             InlineKeyboardButton::make(

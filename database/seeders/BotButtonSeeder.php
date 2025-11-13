@@ -16,12 +16,12 @@ class BotButtonSeeder extends Seeder
     private function createButton(?int $parentId, BotCallback $callback, int $order): void
     {
         BotButton::create([
-            'parent_id'     => $parentId,
-            'entity_type'   => null,
-            'entity_id'     => null,
-            'text'          => $this->translations($callback),
+            'parent_id' => $parentId,
+            'entity_type' => null,
+            'entity_id' => null,
+            'text' => $this->translations($callback),
             'callback_data' => $callback->value,
-            'order'         => $order,
+            'order' => $order,
         ]);
     }
 

@@ -52,4 +52,3 @@ return [
         'confession_menu_action' => '⛪ საეკლესიო მომსახურება',
     ],
 ];
-

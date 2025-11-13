@@ -2,6 +2,8 @@
 
 namespace App\Telegram\DTOs;
 
+use Illuminate\Support\Facades\Log;
+
 class CallbackData
 {
     public function __construct(
@@ -23,13 +25,13 @@ class CallbackData
 
         $parts = explode(':', $callbackPart);
 
-        \Log::info('CallbackData parse',$parts);
+        Log::info('CallbackData parse', $parts);
 
         return new self(
-            confession: $parts[0] ?? null,
+            confession: $parts[0],
             action: $parts[2] ?? null,
-            actionId: isset($parts[3]) ? (int)$parts[3] : null,
-            confessionId: isset($parts[1]) ? (int)$parts[1] : null,
+            actionId: isset($parts[3]) ? (int) $parts[3] : null,
+            confessionId: isset($parts[1]) ? (int) $parts[1] : null,
             method: $method
         );
     }
@@ -40,13 +42,13 @@ class CallbackData
             $this->confession,
             $this->confessionId,
             $this->action,
-            $this->actionId
-        ], fn($value) => $value !== null);
+            $this->actionId,
+        ], fn ($value) => $value !== null);
 
         $result = implode(':', $parts);
 
         if ($this->method !== null) {
-            $result .= '@' . $this->method;
+            $result .= '@'.$this->method;
         }
 
         return $result;

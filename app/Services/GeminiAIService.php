@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Log;
 class GeminiAIService
 {
     protected string $apiKey;
+
     protected string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
+
     protected string $model = 'gemini-2.5-flash-preview-09-2025'; // Актуальна модель для чату
 
     public function __construct()
@@ -39,9 +41,10 @@ class GeminiAIService
 
     /**
      * Надсилає повідомлення користувача до LLM і повертає відповідь.
+     *
      * * @param string $threadId Унікальний ID потоку розмови
-     * @param string $message Повідомлення від користувача
-     * @param string $systemInstruction Інструкція для ШІ (його роль)
+     * @param  string  $message  Повідомлення від користувача
+     * @param  string  $systemInstruction  Інструкція для ШІ (його роль)
      * @return string Відповідь ШІ
      */
     public function sendMessage(string $threadId, string $message, string $systemInstruction): string
@@ -75,17 +78,19 @@ class GeminiAIService
                 }
             }
 
-            Log::error('Gemini API Error: ' . $response->body());
-            return 'Вибачте, сталася внутрішня помилка при з\'єднанні з ШІ. Спробуйте пізніше.';
+            Log::error('Gemini API Error: '.$response->body());
 
+            return 'Вибачте, сталася внутрішня помилка при з\'єднанні з ШІ. Спробуйте пізніше.';
         } catch (\Exception $e) {
-            Log::error('Gemini Service Exception: ' . $e->getMessage());
+            Log::error('Gemini Service Exception: '.$e->getMessage());
+
             return 'Вибачте, сталася помилка з\'єднання з сервісом ШІ.';
         }
     }
 
     /**
      * Повертає історію розмови для поточного потоку.
+     *
      * * @param string $threadId Унікальний ID потоку розмови
      * @return array Масив повідомлень
      */

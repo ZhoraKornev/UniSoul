@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Confession;
-use App\Models\BotButton;
 use App\Enums\BotCallback;
+use App\Models\BotButton;
+use App\Models\Confession;
 use Illuminate\Database\Seeder;
 
 class BotButtonForConfessionSeeder extends Seeder
@@ -28,7 +28,7 @@ class BotButtonForConfessionSeeder extends Seeder
     private function seedForConfession(Confession $confession): void
     {
         $confessionRootButtonId = BotButton::whereCallbackData(BotCallback::ConfessionListMenu->value)->select('id')->first()?->id;
-        if (!$confessionRootButtonId) {
+        if (! $confessionRootButtonId) {
             return;
         }
 
@@ -61,7 +61,7 @@ class BotButtonForConfessionSeeder extends Seeder
                 'text' => $this->trans($action),
                 'callback_data' => $action->value,
                 'order' => $index + 1,
-                'need_donations' => fake()->boolean()
+                'need_donations' => fake()->boolean(),
             ]);
         }
 
@@ -83,7 +83,6 @@ class BotButtonForConfessionSeeder extends Seeder
             'order' => 3,
         ]);
 
-
         // LEVEL 2
 
         $actions = [
@@ -100,7 +99,7 @@ class BotButtonForConfessionSeeder extends Seeder
                 'text' => $this->trans($action),
                 'callback_data' => $action->value,
                 'order' => $index + 1,
-                'need_donations' => fake()->boolean()
+                'need_donations' => fake()->boolean(),
             ]);
         }
 

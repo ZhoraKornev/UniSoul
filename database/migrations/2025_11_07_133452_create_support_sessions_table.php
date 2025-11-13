@@ -1,9 +1,9 @@
 <?php
 
+use App\Enums\State;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-use App\Enums\State; // Import the State Enum to use its value for the default
+use Illuminate\Support\Facades\Schema; // Import the State Enum to use its value for the default
 
 return new class extends Migration
 {

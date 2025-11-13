@@ -12,13 +12,16 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 class FeedbackConversation extends Conversation
 {
     protected ?string $feedback;
+
     protected bool $success = false;
+
     protected int $chat_id;
+
     protected int $message_id;
 
     /**
      * Ask for feedback text
-     * @param Nutgram $bot
+     *
      * @throws InvalidArgumentException
      */
     public function start(Nutgram $bot): void
@@ -39,12 +42,12 @@ class FeedbackConversation extends Conversation
 
     /**
      * Get the feedback message
-     * @param Nutgram $bot
+     *
      * @throws InvalidArgumentException
      */
     public function getFeedback(Nutgram $bot): void
     {
-        //handle cancel button
+        // handle cancel button
         if ($bot->isCallbackQuery() && $bot->callbackQuery()->data === 'feedback.cancel') {
             $bot->answerCallbackQuery();
             $this->end();
@@ -53,7 +56,7 @@ class FeedbackConversation extends Conversation
             return;
         }
 
-        //check valid input
+        // check valid input
         if ($bot->message()?->text === null) {
             $bot->sendMessage(
                 text: message('feedback.wrong'),
@@ -64,10 +67,10 @@ class FeedbackConversation extends Conversation
             return;
         }
 
-        //get the input
+        // get the input
         $this->feedback = $bot->message()->text;
 
-        //send feedback to dev
+        // send feedback to dev
         $bot->sendMessage(
             text: message('feedback.received', [
                 'from' => "{$bot->user()?->first_name} {$bot->user()?->last_name}",
@@ -80,7 +83,7 @@ class FeedbackConversation extends Conversation
 
         $this->success = true;
 
-        //close conversation
+        // close conversation
         $this->end();
 
         stats('feedback.sent');

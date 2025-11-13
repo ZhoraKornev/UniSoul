@@ -20,9 +20,10 @@ class SettingsConversation extends InlineMenu
         $chat = $bot->get(Chat::class);
 
         // Ensure the chat record exists before proceeding
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -62,9 +63,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -92,9 +94,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -104,6 +107,7 @@ class SettingsConversation extends InlineMenu
         if ($currentLanguage === $language) {
             $bot->answerCallbackQuery();
             $this->start($bot);
+
             return;
         }
 
@@ -122,9 +126,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -138,7 +143,7 @@ class SettingsConversation extends InlineMenu
         foreach (Gender::cases() as $gender) {
             $this->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: $gender->emoji() . ' ' . $gender->label(),
+                    text: $gender->emoji().' '.$gender->label(),
                     callback_data: "gender:{$gender->value}@setGender"
                 )
             );
@@ -161,9 +166,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -173,6 +179,7 @@ class SettingsConversation extends InlineMenu
         if ($currentGender === $genderValue) {
             $bot->answerCallbackQuery();
             $this->start($bot);
+
             return;
         }
 
@@ -188,9 +195,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -212,7 +220,7 @@ class SettingsConversation extends InlineMenu
             // Properties and methods are now correctly recognized on Confession model
             $this->addButtonRow(
                 InlineKeyboardButton::make(
-                    text: $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale()),
+                    text: $confession->emoji.' '.$confession->getTranslation('name', app()->getLocale()),
                     callback_data: "settings:{$confession->id}@setConfession"
                 )
             );
@@ -235,9 +243,10 @@ class SettingsConversation extends InlineMenu
         /** @var Chat|null $chat */
         $chat = Chat::find($bot->userId());
 
-        if (!$chat) {
+        if (! $chat) {
             $bot->sendMessage(trans('telegram.chat_not_found'));
             $this->end();
+
             return;
         }
 
@@ -247,16 +256,16 @@ class SettingsConversation extends InlineMenu
         if ($currentConfession == $confessionId) {
             $bot->answerCallbackQuery();
             $this->start($bot);
+
             return;
         }
 
         // Use the settings relationship, now safely typed as Chat
-        $chat->settings()->set(SettingsKeys::CONFESSION->value, (int)$confessionId);
+        $chat->settings()->set(SettingsKeys::CONFESSION->value, (int) $confessionId);
 
         $bot->answerCallbackQuery();
         $this->start($bot);
     }
-
 
     /**
      * Get the main settings message.
@@ -327,7 +336,7 @@ class SettingsConversation extends InlineMenu
      */
     protected function getLanguageName(?string $code): string
     {
-        if (!$code) {
+        if (! $code) {
             return trans('settings.not_set');
         }
 
@@ -348,14 +357,14 @@ class SettingsConversation extends InlineMenu
      */
     protected function getGenderDisplay(?string $genderValue): string
     {
-        if (!$genderValue) {
+        if (! $genderValue) {
             return trans('settings.not_set');
         }
 
         $gender = Gender::tryFrom($genderValue);
 
         return $gender
-            ? $gender->emoji() . ' ' . $gender->label()
+            ? $gender->emoji().' '.$gender->label()
             : trans('settings.not_set');
     }
 
@@ -364,7 +373,7 @@ class SettingsConversation extends InlineMenu
      */
     protected function getConfessionDisplay(?int $confessionId): string
     {
-        if (!$confessionId) {
+        if (! $confessionId) {
             return trans('settings.not_set');
         }
 
@@ -373,7 +382,7 @@ class SettingsConversation extends InlineMenu
 
         // Properties and methods are now correctly recognized on Confession model
         return $confession
-            ? $confession->emoji . ' ' . $confession->getTranslation('name', app()->getLocale())
+            ? $confession->emoji.' '.$confession->getTranslation('name', app()->getLocale())
             : trans('settings.not_set');
     }
 }

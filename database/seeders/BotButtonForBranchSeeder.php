@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BotButton;
 use App\Enums\BotCallback;
+use App\Models\BotButton;
 use App\Models\Branch;
 use Illuminate\Database\Seeder;
 
@@ -28,7 +28,7 @@ class BotButtonForBranchSeeder extends Seeder
     private function seedForBranch(Branch $branch): void
     {
         $confessionRootButtonId = BotButton::whereCallbackData(BotCallback::ShowBranches->value)->select('id')->first()?->id;
-        if (!$confessionRootButtonId) {
+        if (! $confessionRootButtonId) {
             return;
         }
 
@@ -48,7 +48,7 @@ class BotButtonForBranchSeeder extends Seeder
                 'text' => $this->trans($action),
                 'callback_data' => $action->value,
                 'order' => $index + 1,
-                'need_donations' => fake()->boolean()
+                'need_donations' => fake()->boolean(),
             ]);
         }
     }
